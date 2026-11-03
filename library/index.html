@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aerolith: Frutiger Aero UI, rendered in Bryce 2</title>
-<meta name="description" content="A Frutiger Aero component library for the web. Every button, field and pane is a sprite rendered in Bryce 2 (1996), skinned onto native HTML elements.">
+<meta name="description" content="Frutiger Aero for the web. Glossy buttons and real glass, each one rendered in Bryce 2 and laid over plain HTML.">
 <meta property="og:title" content="Aerolith">
-<meta property="og:description" content="Frutiger Aero UI for the web, every sprite rendered in Bryce 2.">
+<meta property="og:description" content="Glossy buttons and real glass for the web, each one rendered in Bryce 2.">
 <meta property="og:image" content="https://immineal.github.io/aerolith/assets/social.png">
 <meta name="theme-color" content="#2f86e0">
 <link rel="icon" href="dist/sprites/orb-info@3x.png">
@@ -73,8 +73,8 @@
 
 <main>
   <div class="hero">
-    <h1>Frutiger Aero, rendered in Bryce&nbsp;2</h1>
-    <p>A UI library for the web where every button, field and pane is a sprite rendered in Bryce 2 (1996), reflecting a blue sky and green hills. The sprites are drawn onto native HTML elements, so forms, keyboard use and screen readers work as usual.</p>
+    <h1>Every button here was rendered in Bryce&nbsp;2</h1>
+    <p>Software used to look like glass and water. Aerolith brings that look to the web. I built each button, field and pane as a small 3D scene in Bryce, the landscape renderer from 1996, with a sunny meadow behind the camera. Look closely and you'll find sky in the top half of every button and grass along its lower edge. Underneath it's plain HTML, so forms, keyboards and screen readers work like they always did.</p>
     <div class="row">
       <a class="aer-button aer-l" href="https://github.com/immineal/aerolith#use-it">Get started</a>
       <a class="aer-button aer-quiet aer-l" href="https://github.com/immineal/aerolith#how-its-made">How it's made</a>
@@ -83,7 +83,7 @@
 
   <section id="buttons" aria-labelledby="h-buttons">
     <h2 id="h-buttons">Buttons</h2>
-    <p>Three heights: 32, 44 and 56 px. 44 px is the default and the minimum touch target. Pressing a button sinks its face into a bowl, which moves the highlight to the bottom.</p>
+    <p>Aqua for the main action, green for the second one, clear glass for the rest. Buttons come in 32, 44 and 56 px, and 44 is the default because it fits a thumb. Press one and its face sinks into a bowl, so the shine slides down to the bottom edge.</p>
     <div class="stack">
       <div class="row">
         <button class="aer-button aer-s">Small</button>
@@ -116,7 +116,7 @@
 
   <section id="inputs" aria-labelledby="h-inputs">
     <h2 id="h-inputs">Inputs</h2>
-    <p>Every control is the native element with a rendered skin. Fields sit in a recessed well. Selected states use the aqua gloss.</p>
+    <p>Under each skin is the browser's own control, so typing, autofill and keyboard focus behave as usual. Fields are pressed into the surface like a shallow well. Whatever you select lights up in aqua.</p>
     <div class="grid">
       <div class="aer-panel stack">
         <label class="aer-label">File name <input class="aer-field" value="report-2026.pdf"></label>
@@ -166,7 +166,7 @@
 
   <section id="feedback" aria-labelledby="h-feedback">
     <h2 id="h-feedback">Feedback</h2>
-    <p>Liquid in glass tubes, gem badges, and a spinner made of eight separate renders so the lighting stays put while it turns.</p>
+    <p>Progress is liquid filling a glass tube. Badges are small gems. The spinner is eight separate renders, one per frame, so the sun stays where it is while the orbs go round.</p>
     <div class="grid">
       <div class="aer-card stack">
         <label class="aer-label">Converting… <progress class="aer-progress" max="100" value="62">62%</progress></label>
@@ -192,7 +192,7 @@
 
   <section id="surfaces" aria-labelledby="h-surfaces">
     <h2 id="h-surfaces">Surfaces</h2>
-    <p>Frosted glass in light mode, smoked glass in dark mode. Each glass sprite is matted twice, once for each page tone. In Chromium the clear lens also bends what is behind its rim.</p>
+    <p>Glass is frosted on a light page and smoked on a dark one, so Bryce rendered every pane for both. In Chrome and Edge the clear lens also bends whatever is behind its rim. Follow a stripe as it crosses the rim and you'll see it kink.</p>
     <div class="grid">
       <div class="stack">
         <div class="aer-panel"><h3 style="margin-top:0">Panel</h3><p style="margin:0">Big frosted pane for grouping a tool's settings.</p></div>
@@ -223,7 +223,7 @@
 
   <section id="icons" aria-labelledby="h-icons">
     <h2 id="h-icons">Icons</h2>
-    <p>Each glyph is drawn as a height map, embossed into a Bryce lattice, and rendered at 24 and 16 px, in aqua for standalone use and pearl for use on coloured buttons.</p>
+    <p>35 icons, each drawn as a height map and pressed into a Bryce lattice like a stamp into wax. Aqua icons stand on their own, pearl ones sit on coloured buttons. The 16 px set is its own render, not the 24 px set scaled down.</p>
     <span class="on-aqua" aria-hidden="true"><span class="aer-icon aer-pearl aer-icon-heart"></span><span class="aer-icon aer-pearl aer-icon-play"></span><span class="aer-icon aer-pearl aer-icon-gear"></span></span>
     <ul class="icons" style="margin-top: var(--aer-space-4)">
       <li><span class="aer-icon aer-icon-heart" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-heart" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-heart" aria-hidden="true"></span><code>heart</code></li>

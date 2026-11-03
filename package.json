@@ -1,7 +1,7 @@
 {
   "name": "aerolith",
   "version": "1.0.0",
-  "description": "Frutiger Aero UI for the web. Every button, field and pane is a sprite rendered in Bryce 2 (1996), skinned onto native HTML elements.",
+  "description": "Glossy buttons and real glass for the web, in the Frutiger Aero style. Every sprite rendered in Bryce 2 (1996) and laid over plain HTML.",
   "keywords": [
     "frutiger-aero", "css", "ui", "ui-library", "design-system", "skeuomorphism", "glassmorphism",
     "retro", "y2k", "aero", "bryce", "sprites", "dark-mode", "accessibility", "vanilla-css"

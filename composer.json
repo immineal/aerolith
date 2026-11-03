@@ -1,6 +1,6 @@
 {
   "name": "immineal/aerolith",
-  "description": "Frutiger Aero UI for the web: CSS + sprites rendered in Bryce 2, skinned onto native HTML elements. Assets live in library/dist/.",
+  "description": "Glossy buttons and real glass for the web, in the Frutiger Aero style. Every sprite rendered in Bryce 2 (1996) and laid over plain HTML. Files are in library/dist/.",
   "type": "library",
   "license": "MIT",
   "homepage": "https://immineal.github.io/aerolith/",

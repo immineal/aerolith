@@ -1,31 +1,33 @@
 # Aerolith
 
-A Frutiger Aero UI library for the web. Every button, field, pane and icon is a sprite rendered in
-Bryce 2, the 1996 landscape renderer, and drawn onto native HTML elements with CSS.
+Glossy buttons and real glass for the web, in the Frutiger Aero style. I rendered every button,
+field, pane and icon in Bryce 2, the landscape renderer from 1996, and the CSS lays them over plain
+HTML elements.
 
 **[Live showcase](https://immineal.github.io/aerolith/)** · [npm](https://www.npmjs.com/package/aerolith) · [Changelog](CHANGELOG.md)
 
 ![Aerolith components in light and dark mode](docs/images/hero.png)
 
-The glossy parts reflect a sunny meadow, with blue sky above and green hills below, that sits
-behind the camera in every render. Glass is real Bryce glass, rendered over two backdrops and
-matted so it stays translucent on your page. Pressed buttons sink into a bowl, so the highlight
-moves to the bottom edge. Every surface was rendered, not painted in CSS.
+Behind the camera in every render there's a sunny meadow, so each glossy button carries a bit of
+blue sky in its top half and green grass along its lower edge. The glass is real Bryce glass and
+stays see-through on your page. Press a button and its face sinks into a bowl, so the shine slides
+to the bottom. None of it is a CSS gradient.
 
 ## Use it
 
-No build step. Link the stylesheet and, optionally, the script:
+There's no build step. Link the stylesheet, and the script if you want the extras:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aerolith@1/library/dist/aerolith.css">
 <script src="https://cdn.jsdelivr.net/npm/aerolith@1/library/dist/aerolith.js" defer></script>
 ```
 
-The same files are on GitHub through jsDelivr
-(`https://cdn.jsdelivr.net/gh/immineal/aerolith@v1.0.0/library/dist/aerolith.css`) and in the
-release zip. Keep `sprites/` next to `aerolith.css`; the CSS finds the images relative to itself.
+jsDelivr also serves the files straight from GitHub
+(`https://cdn.jsdelivr.net/gh/immineal/aerolith@v1.0.0/library/dist/aerolith.css`), and the
+release zip has them too. If you host them yourself, keep `sprites/` next to `aerolith.css`,
+because the CSS looks for the images relative to itself.
 
-Then use native elements with Aerolith classes:
+Then put the classes on ordinary elements:
 
 ```html
 <button class="aer-button">Convert to PDF</button>
@@ -41,8 +43,8 @@ Then use native elements with Aerolith classes:
 </button>
 ```
 
-Add `class="aer"` to `<body>` (or any container) to get the focus outline and reduced-motion
-handling. The showcase uses every component, so its source doubles as reference markup.
+Put `class="aer"` on `<body>` or any container to get the focus ring and the reduced-motion rules.
+The showcase uses every component, so view its source when you need an example.
 
 ### Package managers
 
@@ -56,7 +58,7 @@ handling. The showcase uses every component, so its source doubles as reference 
 
 ### Frameworks
 
-Aerolith is plain CSS classes on native elements, so it needs no wrapper components. Import the
+Aerolith is just classes on native elements, so React, Vue and friends need no wrappers. Import the
 stylesheet once:
 
 ```js
@@ -72,8 +74,8 @@ import "aerolith/aerolith.css";
 ---
 ```
 
-In JSX write `className="aer-button"`. When you add components after page load (client-side
-routing), call `window.Aerolith.init(container)` to wire up the optional behaviour.
+In JSX it's `className="aer-button"`. If your router adds components after the page has loaded,
+call `window.Aerolith.init(container)` so the script picks them up.
 
 ## Components
 
@@ -101,66 +103,71 @@ routing), call `window.Aerolith.init(container)` to wire up the optional behavio
 | `.aer-lens` | any block | rim refraction in Chromium |
 | `.aer-compare` | two `<img>` and an `<input type="range">` | |
 
-Dark mode follows `prefers-color-scheme`. Force it with `<html data-theme="dark">` (or `"light"`),
-or scope it with `.aer-dark`. The theme switch (`input[data-aer-theme]`) sets the attribute and
-remembers the choice.
+Dark mode follows the system setting. To force it, set `<html data-theme="dark">` (or `"light"`),
+or put `.aer-dark` on one part of the page. The sun and moon switch (`input[data-aer-theme]`) sets
+the attribute for you and remembers the choice.
 
 ## Accessibility
 
-- Every skin sits on the native element, so keyboard use, form submission, screen readers and
-  autofill behave as they would without Aerolith.
-- Label contrast was measured on the rendered sprite pixels, at the darkest 5 % of the label
-  area, before the text halo is added: white on aqua 4.4:1, white on green 4.7:1, dark ink on
-  clear glass at least 4.6:1 in both themes. Hover and pressed states are lighter, so their
-  labels get a stronger halo.
-- Controls are 44 px high by default. Small controls (checkbox, radio, close orb) get a 44 px hit
-  area through their label or a pseudo-element.
-- `forced-colors` (Windows high contrast) drops the sprites and falls back to system colours.
-  Icons switch to `CanvasText`.
-- `prefers-reduced-motion` stops the spinner and the toggle, toast and dialog animations.
-- Where look and accessibility conflict, the look won, but only after the cheap fixes (ink
-  choice, halos, hit areas) were in. Without their halo, glossy hover states measure 3.3 to
-  3.6:1 and pressed states about 2.4:1, because the sunken face catches more light. Both are
-  momentary states. `python3 library/build/a11y.py` prints the numbers for every labelled sprite.
+The skins sit on top of real form controls, so keyboards, screen readers, autofill and form
+submission work as they would without Aerolith.
+
+I measured label contrast on the rendered pixels, taking the darkest 5 % of the area behind the
+text and leaving out the text halo. White on aqua comes out at 4.4:1, white on green at 4.7:1,
+and dark text on clear glass at 4.6:1 or better in both themes. Hover and pressed states are
+lighter, so their labels get a stronger halo.
+
+- Controls are 44 px high by default. The small ones (checkbox, radio, close orb) still have a
+  44 px hit area, through their label or a pseudo-element.
+- In Windows high contrast mode (`forced-colors`) the sprites go away and system colours take
+  over. Icons turn `CanvasText`.
+- With `prefers-reduced-motion` the spinner stands still and the toggle, toast and dialog
+  animations are off.
+
+Where the look and accessibility pulled in different directions, I did the cheap fixes first
+(text colour, halos, hit areas) and then let the look win. Without their halo, glossy hover
+states measure 3.3 to 3.6:1, and pressed states about 2.4:1 because the sunken face catches more
+light. You only see those states while the pointer is on the button.
+`python3 library/build/a11y.py` prints the numbers for every sprite with a label.
 
 ## How it's made
 
 ![The three render passes of one sprite](docs/images/passes.png)
 
-Bryce 2.1 for Windows runs under Wine on a virtual X display, seven instances side by side. Python
-writes each scene directly as a Bryce `.brc` file. The format was reverse-engineered for this:
-see [docs/brc-format.md](docs/brc-format.md). Bryce then renders it to disk. Each sprite is
-rendered three times:
+Bryce 2.1 for Windows runs under Wine on a virtual display, seven copies at once. A Python script
+writes each scene as a Bryce `.brc` file. Nobody had documented that format, so I worked it out
+and wrote it up in [docs/brc-format.md](docs/brc-format.md). Every sprite gets rendered three
+times:
 
-1. **K:** over black, which gives the colour and every glint.
-2. **W:** over mid grey, so the difference to K shows how much light the glass lets through.
-3. **M:** flat colours, a mask that says which pixels are solid and which are glass.
+1. **K.** Over black. This gives the colour and every glint.
+2. **W.** Over mid grey. Comparing it with K shows how much light the glass lets through.
+3. **M.** In flat colours, as a mask of which pixels are solid and which are glass.
 
-The matting step turns those into PNGs with real alpha: solid gloss is opaque, glass keeps its
-transparency, and a second matte for dark pages turns frosted glass into smoked glass.
+From those three, the build makes PNGs with real transparency. Gloss stays solid and glass stays
+see-through. A second pass for dark pages turns frosted glass into smoked glass.
 
-Each sprite is rendered alone in its own scene. Rendered together, sprites reflect and refract
-their neighbours, which looks random once the sheet is cut up. The camera sits 4000 units away
-with a long lens, so the projection is near-orthographic and one CSS pixel is exactly six render
-pixels. That is downsampled to 3x, 2x and 1x files.
+Each sprite sits alone in its own scene. When I rendered them side by side, every button mirrored
+its neighbours, and that looked random once the sheet was cut apart. The camera is 4000 units away
+with a long lens, so there's almost no perspective, and one CSS pixel is exactly six render
+pixels. The build scales that down to 3x, 2x and 1x.
 
 ![Button states and orbs at 3x: the sky in the top half, the meadow in the lower bevel](docs/images/closeup.png)
 
-Behind the camera is the environment every gloss surface reflects: a custom sky, a big softbox
-for the highlight band, and a tilted meadow with two hills. The camera never sees any of it,
-but every glossy surface shows sky in its upper half and grass along its lower bevel.
+The meadow is behind the camera: a painted sky, a big soft light for the shine across the top,
+and a tilted field with two hills. The camera never sees it directly. You only ever see it
+reflected.
 
-Shapes are Bryce symmetrical lattices (height fields) computed in NumPy: rounded rectangles with
-an eased bevel, a blurred-mask bowl for pressed states, a recessed well for fields, and icons
-embossed from vector drawings. The CSS draws every sprite with `border-image`, with slices
-measured in raw image pixels per resolution. That behaves the same in Chromium, Firefox and
-WebKit, where `image-set()` inside `border-image` does not.
+The shapes are Bryce height fields that NumPy computes. Buttons are rounded rectangles with a soft
+bevel, pressed buttons get a bowl, fields get a shallow well, and icons are embossed from
+drawings. The CSS draws each sprite with `border-image`, with slice sizes in image pixels for
+each resolution. Chromium, Firefox and WebKit all handle that the same way. They don't agree on
+`image-set()` inside `border-image`, so I avoided it.
 
 ## Rebuild it yourself
 
-The rendered output is committed in `library/dist/`, so you only need this to change sprites.
-You need your own copy of Bryce 2 for Windows and Wine. Neither is included, and Bryce never will
-be.
+The finished sprites are already in `library/dist/`, so you only need this to make new ones. You
+need Wine and your own copy of Bryce 2 for Windows. This repo doesn't include Bryce and never
+will.
 
 ```sh
 cd library/build
@@ -170,23 +177,22 @@ python3 build.py --export-only
 python3 shots.py              # screenshots in Chromium, Firefox, WebKit, light and dark
 ```
 
-The renderer setup is in [harness/README.md](harness/README.md), the design rules in
+How to set up the renderer is in [harness/README.md](harness/README.md). The design rules are in
 [docs/ui-library/foundations.md](docs/ui-library/foundations.md).
 
 ## What it does not do
 
-- **No runtime colours.** The colours are baked into the sprites. A new colour means new renders.
-- **Fixed control heights.** Buttons come in 32, 44 and 56 px. They stretch in width (3- and
-  9-slice), not in height.
-- **Glass distortion is Chromium-only.** The lens rim refraction uses an SVG filter in
-  `backdrop-filter`, which only Chromium supports. Elsewhere you get the clear glass without
-  distortion.
-- **No JS framework components.** There are no React or Vue wrappers. The classes go on your
-  own elements.
-- **No icon font or SVG set.** The 35 icons are bitmaps at 16 and 24 px. They don't scale up
-  cleanly.
+- **No colour picker.** The colours are baked into the renders. A new colour means rendering
+  again.
+- **Three heights.** Buttons are 32, 44 or 56 px tall. They stretch sideways, not up.
+- **The lens only bends light in Chrome and Edge.** It needs an SVG filter inside
+  `backdrop-filter`, and only Chromium supports that. Firefox and Safari show the same clear
+  glass without the bend.
+- **No React or Vue components.** You put the classes on your own elements.
+- **No icon font or SVGs.** The 35 icons are bitmaps at 16 and 24 px, and they get blurry if
+  you scale them up.
 
 ## License
 
-MIT, for the code and the rendered sprites. See [LICENSE](LICENSE). Bryce is a trademark of its
-owner. This project is not affiliated with it and contains no part of the Bryce software.
+MIT, for the code and the sprites. See [LICENSE](LICENSE). Bryce is a trademark of its owner.
+Aerolith has nothing to do with them officially and contains no part of the Bryce software.
