@@ -22,7 +22,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble the site (no build step: dist/ is committed)
+      - name: "Assemble the site (no build step, dist/ is committed)"
         run: |
           mkdir _site
           cp library/index.html _site/
