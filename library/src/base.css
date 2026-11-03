@@ -1,0 +1,98 @@
+/* Aerolith — base layer: tokens, spacing, type, focus, fallbacks.
+   Sprite variables (--aer-<sprite>…) are generated into dist/sprites.css and layered on top. */
+
+:root {
+  /* spacing: 4px base, anchored on physical targets (see docs/ui-library/foundations.md) */
+  --aer-space-1: 4px;
+  --aer-space-2: 8px;    /* min gap between touch targets */
+  --aer-space-3: 12px;
+  --aer-space-4: 16px;
+  --aer-space-5: 24px;   /* min target size (WCAG 2.5.8) */
+  --aer-space-6: 32px;   /* control height S */
+  --aer-space-7: 44px;   /* control height M (default) */
+  --aer-space-8: 64px;
+  --aer-space-9: 96px;
+
+  --aer-control-s: 32px;
+  --aer-control-m: 44px;
+  --aer-control-l: 56px;
+  --aer-control: var(--aer-control-m);
+  --aer-target-gap: var(--aer-space-2);
+
+  /* type: modular scale 1.2 */
+  --aer-font-ui: "Segoe UI", "Frutiger", "Myriad Pro", "Lucida Grande", Tahoma, system-ui, sans-serif;
+  --aer-font-text: var(--aer-font-ui);
+  --aer-font-mono: "Consolas", "Lucida Console", ui-monospace, monospace;
+  --aer-text-xs: 0.833rem;
+  --aer-text-s: 0.9rem;
+  --aer-text-m: 1rem;
+  --aer-text-l: 1.2rem;
+  --aer-text-xl: 1.44rem;
+  --aer-text-2xl: 1.728rem;
+  --aer-text-3xl: 2.074rem;
+  --aer-leading: 1.5;
+
+  /* colour (light) */
+  --aer-ink: #0d2236;
+  --aer-ink-muted: #3d5468;
+  --aer-page: #eef6fc;
+  --aer-on-gloss: #ffffff;          /* label text on glossy buttons */
+  --aer-halo: rgba(4, 30, 70, 0.75); /* label halo on glossy sprites */
+  --aer-focus: #0a64d6;
+  --aer-focus-glow: #8fd3ff;
+
+  --aer-radius-pill: 999px;
+  color-scheme: light dark;
+}
+
+:root[data-theme="dark"], .aer-dark {
+  --aer-ink: #e6f1fb;
+  --aer-ink-muted: #a9bfd2;
+  --aer-page: #0d1620;
+  --aer-focus: #8fd3ff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --aer-ink: #e6f1fb;
+    --aer-ink-muted: #a9bfd2;
+    --aer-page: #0d1620;
+    --aer-focus: #8fd3ff;
+  }
+}
+
+/* touch: bigger targets and gaps; fine pointers may use the S size */
+@media (pointer: coarse) {
+  :root { --aer-control: var(--aer-control-m); --aer-target-gap: var(--aer-space-3); }
+}
+/* 10-foot / distance media: scale everything so the visual angle stays comfortable at ~3 m */
+.aer-distance { font-size: 150%; --aer-control: var(--aer-control-l); }
+
+/* label text on glossy sprites: white + halo (WCAG measures text against its halo) */
+.aer-on-gloss {
+  color: var(--aer-on-gloss);
+  text-shadow: 0 0 1px var(--aer-halo), 0 0 3px var(--aer-halo), 0 1px 2px var(--aer-halo);
+}
+
+/* focus: rendered rim glow lives in the sprite; this outline guarantees visibility everywhere */
+.aer :focus-visible, .aer-focusable:focus-visible {
+  outline: 2px solid var(--aer-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aer *, .aer *::before, .aer *::after { animation: none !important; transition: none !important; }
+}
+
+/* Windows High Contrast / forced colours: sprites (background images) are dropped by the browser;
+   give every component a plain system-colour border so it stays legible. */
+@media (forced-colors: active) {
+  .aer [class*="aer-"] { border-color: ButtonText; }
+  .aer-button, .aer-field, .aer-panel { border: 1px solid ButtonText !important; }
+  .aer-button:focus-visible { outline: 2px solid Highlight; }
+}
+
+/* utilities */
+.aer-visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
