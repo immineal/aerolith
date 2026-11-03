@@ -1,0 +1,31 @@
+# Whitelist: only the source tree is tracked. build/ (VM rebuild scripts, which hold a product
+# key), media/ (installers), vm/ (disk images), wine/ (prefixes with Bryce) and work/ (renders)
+# are local-only and never committed.
+/*
+!/.gitignore
+!/.github/
+!/README.md
+!/LICENSE
+!/CHANGELOG.md
+!/package.json
+!/composer.json
+!/bry
+!/docs/
+!/harness/
+!/library/
+!/python/
+
+# inside the tracked tree
+library/work/
+library/dist/test/
+__pycache__/
+*.pyc
+*.bmp
+*.brc
+!harness/bryce_harness/brc_templates/*.brc
+node_modules/
+*.egg-info/
+python/build/
+python/dist/
+python/src/aerolith/static/
+python/LICENSE

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Bryce/Win98 VM harness CLI. See harness/README.md.
+HERE="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+PYTHONPATH="$HERE/harness${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m bryce_harness.cli "$@"
