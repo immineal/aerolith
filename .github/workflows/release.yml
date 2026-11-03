@@ -1,0 +1,87 @@
+name: Release
+
+# Runs when a GitHub release is published. Each registry job skips a version that is already
+# there, so re-running is safe.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the release zip
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          mkdir -p "aerolith-$V"
+          cp -r library/dist/aerolith.css library/dist/aerolith.js library/dist/sprites library/dist/sprites.json LICENSE "aerolith-$V/"
+          printf 'Aerolith %s\n\nLink aerolith.css (and optionally aerolith.js); keep sprites/ next to it.\nDocs: https://github.com/immineal/aerolith\n' "$V" > "aerolith-$V/README.txt"
+          zip -qr "aerolith-$V.zip" "aerolith-$V"
+      - name: Attach it to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" aerolith-*.zip --clobber
+
+  npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write          # npm trusted publishing (OIDC) + provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Publish to npm
+        run: |
+          V=$(node -p "require('./package.json').version")
+          if npm view "aerolith@$V" version >/dev/null 2>&1; then echo "aerolith@$V is already on npm"; exit 0; fi
+          npm publish --provenance --access public
+
+  github-packages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://npm.pkg.github.com
+          scope: "@immineal"
+      - name: Publish @immineal/aerolith
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm pkg set name=@immineal/aerolith
+          V=$(node -p "require('./package.json').version")
+          if npm view "@immineal/aerolith@$V" version >/dev/null 2>&1; then echo "already published"; exit 0; fi
+          npm publish
+
+  pypi:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write          # PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build
+        run: |
+          python python/stage.py
+          python -m pip install --upgrade build
+          python -m build python --outdir dist-py
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist-py
+          skip-existing: true

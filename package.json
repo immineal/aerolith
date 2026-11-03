@@ -1,0 +1,34 @@
+{
+  "name": "aerolith",
+  "version": "1.0.0",
+  "description": "Frutiger Aero UI for the web. Every button, field and pane is a sprite rendered in Bryce 2 (1996), skinned onto native HTML elements.",
+  "keywords": [
+    "frutiger-aero", "css", "ui", "ui-library", "design-system", "skeuomorphism", "glassmorphism",
+    "retro", "y2k", "aero", "bryce", "sprites", "dark-mode", "accessibility", "vanilla-css"
+  ],
+  "homepage": "https://immineal.github.io/aerolith/",
+  "bugs": "https://github.com/immineal/aerolith/issues",
+  "repository": { "type": "git", "url": "git+https://github.com/immineal/aerolith.git" },
+  "license": "MIT",
+  "author": "Immineal (https://github.com/immineal)",
+  "style": "library/dist/aerolith.css",
+  "main": "library/dist/aerolith.js",
+  "unpkg": "library/dist/aerolith.css",
+  "jsdelivr": "library/dist/aerolith.css",
+  "exports": {
+    ".": { "style": "./library/dist/aerolith.css", "default": "./library/dist/aerolith.js" },
+    "./aerolith.css": "./library/dist/aerolith.css",
+    "./css": "./library/dist/aerolith.css",
+    "./aerolith.js": "./library/dist/aerolith.js",
+    "./sprites/*": "./library/dist/sprites/*",
+    "./sprites.json": "./library/dist/sprites.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "library/dist/aerolith.css",
+    "library/dist/aerolith.js",
+    "library/dist/sprites.json",
+    "library/dist/sprites/"
+  ],
+  "sideEffects": ["*.css", "./library/dist/aerolith.js"]
+}

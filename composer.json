@@ -1,0 +1,16 @@
+{
+  "name": "immineal/aerolith",
+  "description": "Frutiger Aero UI for the web: CSS + sprites rendered in Bryce 2, skinned onto native HTML elements. Assets live in library/dist/.",
+  "type": "library",
+  "license": "MIT",
+  "homepage": "https://immineal.github.io/aerolith/",
+  "keywords": ["frutiger-aero", "css", "ui", "design-system", "skeuomorphism", "retro", "assets"],
+  "authors": [{ "name": "Immineal", "homepage": "https://github.com/immineal" }],
+  "support": {
+    "issues": "https://github.com/immineal/aerolith/issues",
+    "source": "https://github.com/immineal/aerolith"
+  },
+  "archive": {
+    "exclude": ["/harness", "/docs", "/python", "/library/build", "/library/lookdev", "/library/src", "/.github"]
+  }
+}
