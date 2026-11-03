@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aerolith: Frutiger Aero UI, rendered in Bryce 2</title>
+<meta name="description" content="A Frutiger Aero component library for the web. Every button, field and pane is a sprite rendered in Bryce 2 (1996), skinned onto native HTML elements.">
+<meta property="og:title" content="Aerolith">
+<meta property="og:description" content="Frutiger Aero UI for the web, every sprite rendered in Bryce 2.">
+<meta property="og:image" content="https://immineal.github.io/aerolith/assets/social.png">
+<meta name="theme-color" content="#2f86e0">
+<link rel="icon" href="dist/sprites/orb-info@3x.png">
+<link rel="stylesheet" href="dist/aerolith.css">
+<style>
+  html { scroll-padding-top: 88px; background: #eaf6fb linear-gradient(#5fb4f2 0, #bfe5fb 560px, #e6f5fc 900px, #eaf6fb) no-repeat; }
+  :root[data-theme="dark"] { background: #0f1c26 linear-gradient(#0a1422, #16263a 700px, #0f1c26 1400px) no-repeat; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { background: #0f1c26 linear-gradient(#0a1422, #16263a 700px, #0f1c26 1400px) no-repeat; }
+  }
+  body { margin: 0; min-height: 100vh; font: var(--aer-text-m)/var(--aer-leading) var(--aer-font-text); color: var(--aer-ink); }
+  .top { position: sticky; top: 8px; z-index: 10; max-width: 1040px; margin: 8px auto 0; padding: 0 16px; }
+  .top .aer-bar { flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: var(--aer-text-l); }
+  main { max-width: 1040px; margin: 0 auto; padding: var(--aer-space-6) 16px var(--aer-space-9); }
+  .hero { display: grid; gap: var(--aer-space-4); padding: var(--aer-space-7) 0 var(--aer-space-6); }
+  .hero h1 { font: 600 clamp(2rem, 5vw, 3.2rem)/1.1 var(--aer-font-ui); margin: 0; letter-spacing: -0.01em; }
+  .hero p { margin: 0; max-width: 60ch; font-size: var(--aer-text-l); color: var(--aer-ink-muted); }
+  section { margin-block-start: var(--aer-space-8); }
+  h2 { font: 600 var(--aer-text-xl)/1.2 var(--aer-font-ui); margin: 0 0 var(--aer-space-2); }
+  h2 + p { margin: 0 0 var(--aer-space-4); color: var(--aer-ink-muted); max-width: 70ch; }
+  h3 { font: 600 var(--aer-text-m)/1.3 var(--aer-font-ui); margin: var(--aer-space-5) 0 var(--aer-space-3); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--aer-space-3); }
+  .grid { display: grid; gap: var(--aer-space-5); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .stack { display: grid; gap: var(--aer-space-4); align-content: start; }
+  fieldset { border: 0; padding: 0; margin: 0; min-inline-size: 0; }
+  code { font: 0.85em var(--aer-font-mono); }
+  .icons { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--aer-space-2);
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .icons li { display: flex; align-items: center; gap: 10px; min-block-size: 36px; }
+  .icons code { color: var(--aer-ink-muted); }
+  .on-aqua { display: inline-flex; gap: 10px; padding: 10px 14px; border-radius: 12px;
+    background: linear-gradient(#2a86e6, #0f58b8); }
+  .lens-stage { position: relative; display: grid; place-items: center; min-block-size: 280px; overflow: hidden;
+    border-radius: 18px; padding: var(--aer-space-6) var(--aer-space-4);
+    background:
+      repeating-linear-gradient(60deg, rgba(255,255,255,.6) 0 3px, transparent 3px 37px),
+      linear-gradient(160deg, #2f86e0, #6fd0f0 45%, #9be36a 55%, #3f9a1e); }
+  .lens-stage .behind { position: absolute; inset: 0; display: grid; place-items: center;
+    font: 800 clamp(3rem, 12vw, 7rem)/1 var(--aer-font-ui); color: rgba(255,255,255,.85); letter-spacing: -0.02em; }
+  .lens-stage .aer-lens { inline-size: min(340px, 90%); min-block-size: 180px; display: grid; place-items: center;
+    text-align: center; color: #0d2236; font-weight: 600; }
+  footer { margin-top: var(--aer-space-9); color: var(--aer-ink-muted); font-size: var(--aer-text-s); }
+  footer a { color: inherit; }
+  a { color: var(--aer-focus); }
+</style>
+</head>
+<body class="aer">
+<div class="top">
+  <header class="aer-bar">
+    <span class="brand"><span class="aer-icon aer-icon-colour" aria-hidden="true"></span> Aerolith</span>
+    <nav class="aer-segmented" aria-label="Sections">
+      <a href="#buttons" aria-current="true">Buttons</a>
+      <a href="#inputs">Inputs</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#surfaces">Surfaces</a>
+      <a href="#icons">Icons</a>
+    </nav>
+    <span class="aer-spacer"></span>
+    <label class="aer-option"><input type="checkbox" role="switch" class="aer-toggle aer-theme" data-aer-theme aria-label="Dark mode"></label>
+    <a class="aer-iconbtn aer-quiet" href="https://github.com/immineal/aerolith" aria-label="Source on GitHub"><span class="aer-icon aer-icon-code" aria-hidden="true"></span></a>
+  </header>
+</div>
+
+<main>
+  <div class="hero">
+    <h1>Frutiger Aero, rendered in Bryce&nbsp;2</h1>
+    <p>A UI library for the web where every button, field and pane is a sprite rendered in Bryce 2 (1996), reflecting a blue sky and green hills. The sprites are drawn onto native HTML elements, so forms, keyboard use and screen readers work as usual.</p>
+    <div class="row">
+      <a class="aer-button aer-l" href="https://github.com/immineal/aerolith#use-it">Get started</a>
+      <a class="aer-button aer-quiet aer-l" href="https://github.com/immineal/aerolith#how-its-made">How it's made</a>
+    </div>
+  </div>
+
+  <section id="buttons" aria-labelledby="h-buttons">
+    <h2 id="h-buttons">Buttons</h2>
+    <p>Three heights: 32, 44 and 56 px. 44 px is the default and the minimum touch target. Pressing a button sinks its face into a bowl, which moves the highlight to the bottom.</p>
+    <div class="stack">
+      <div class="row">
+        <button class="aer-button aer-s">Small</button>
+        <button class="aer-button">In PDF umwandeln</button>
+        <button class="aer-button aer-l">Large</button>
+        <button class="aer-button" aria-pressed="true">Pressed</button>
+      </div>
+      <div class="row">
+        <button class="aer-button aer-secondary aer-s">Save</button>
+        <button class="aer-button aer-secondary"><span class="aer-icon aer-icon-download" aria-hidden="true"></span> Alle herunterladen</button>
+        <button class="aer-button aer-secondary aer-l">Start</button>
+      </div>
+      <div class="row">
+        <button class="aer-button aer-quiet aer-s">Cancel</button>
+        <button class="aer-button aer-quiet"><span class="aer-icon aer-icon-upload" aria-hidden="true"></span> Choose files…</button>
+        <button class="aer-button aer-quiet aer-l">More options</button>
+        <button class="aer-button" disabled>Nicht verfügbar</button>
+      </div>
+      <div class="row">
+        <button class="aer-iconbtn" aria-label="Settings"><span class="aer-icon aer-icon-gear" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn" aria-label="Play"><span class="aer-icon aer-icon-play" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn" aria-label="Favourite" aria-pressed="true"><span class="aer-icon aer-icon-heart" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn aer-quiet" aria-label="Search"><span class="aer-icon aer-icon-search" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn aer-quiet" aria-label="Undo"><span class="aer-icon aer-icon-undo" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn aer-quiet" aria-label="Redo"><span class="aer-icon aer-icon-redo" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn aer-quiet" aria-label="Copy"><span class="aer-icon aer-icon-copy" aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </section>
+
+  <section id="inputs" aria-labelledby="h-inputs">
+    <h2 id="h-inputs">Inputs</h2>
+    <p>Every control is the native element with a rendered skin. Fields sit in a recessed well. Selected states use the aqua gloss.</p>
+    <div class="grid">
+      <div class="aer-panel stack">
+        <label class="aer-label">File name <input class="aer-field" value="report-2026.pdf"></label>
+        <label class="aer-label">Search <input class="aer-field" type="search" placeholder="Werkzeug suchen…"></label>
+        <label class="aer-label">Page size
+          <span class="aer-select"><select class="aer-field">
+            <option>A4 (210 × 297 mm)</option><option>US Letter</option><option>A5</option>
+          </select></span>
+        </label>
+        <label class="aer-label">Notes <textarea class="aer-field" rows="3">Merge pages 1–4, then compress.</textarea></label>
+      </div>
+      <div class="stack">
+        <div class="row">
+          <label class="aer-option"><input type="checkbox" role="switch" class="aer-toggle"> Keep metadata</label>
+          <label class="aer-option"><input type="checkbox" role="switch" class="aer-toggle" checked> Compress</label>
+        </div>
+        <div class="row">
+          <label class="aer-option"><input type="checkbox" class="aer-check" checked> Checked</label>
+          <label class="aer-option"><input type="checkbox" class="aer-check" id="mixed"> Mixed</label>
+          <label class="aer-option"><input type="checkbox" class="aer-check"> Off</label>
+        </div>
+        <fieldset class="row">
+          <legend class="aer-visually-hidden">Orientation</legend>
+          <label class="aer-option"><input type="radio" name="o" class="aer-radio" checked> Portrait</label>
+          <label class="aer-option"><input type="radio" name="o" class="aer-radio"> Landscape</label>
+        </fieldset>
+        <div class="aer-segmented" role="radiogroup" aria-label="View">
+          <label><input type="radio" name="view" checked><span>Grid</span></label>
+          <label><input type="radio" name="view"><span>List</span></label>
+          <label><input type="radio" name="view"><span>Spalten</span></label>
+        </div>
+        <span class="aer-slider"><input type="range" min="0" max="100" value="70" aria-label="Quality"></span>
+      </div>
+    </div>
+    <h3>Choice cards and drop zone</h3>
+    <div class="grid">
+      <fieldset class="stack">
+        <legend class="aer-visually-hidden">Output format</legend>
+        <label class="aer-choice"><input type="radio" class="aer-radio" name="fmt" checked><b>PDF</b><span>One document, pages in order.</span></label>
+        <label class="aer-choice"><input type="radio" class="aer-radio" name="fmt"><b>Images (ZIP)</b><span>One PNG per page.</span></label>
+      </fieldset>
+      <label class="aer-drop"><input type="file" multiple>
+        <span class="aer-icon aer-icon-upload" aria-hidden="true"></span>
+        <b>Dateien hierher ziehen</b><span>or click to choose</span></label>
+    </div>
+  </section>
+
+  <section id="feedback" aria-labelledby="h-feedback">
+    <h2 id="h-feedback">Feedback</h2>
+    <p>Liquid in glass tubes, gem badges, and a spinner made of eight separate renders so the lighting stays put while it turns.</p>
+    <div class="grid">
+      <div class="aer-card stack">
+        <label class="aer-label">Converting… <progress class="aer-progress" max="100" value="62">62%</progress></label>
+        <div class="row"><span class="aer-spinner" role="status" aria-label="Loading"></span> Uploading 3 of 12…</div>
+        <div class="row">
+          <span class="aer-badge">PASS</span><span class="aer-badge aer-info">12 files</span>
+          <span class="aer-badge aer-warn">Over limit</span><span class="aer-badge aer-error">Failed</span>
+        </div>
+        <div class="row">
+          <span class="aer-option"><span class="aer-orb"></span> Ready</span>
+          <span class="aer-option"><span class="aer-orb aer-warn"></span> Waiting</span>
+          <span class="aer-option"><span class="aer-orb aer-error"></span> Offline</span>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="aer-callout"><b>Tip.</b> Files never leave your device. Everything runs in the browser.</div>
+        <div class="aer-callout aer-warn"><b>Large file.</b> 240 MB may take a minute on older phones.</div>
+        <div class="aer-callout aer-error"><b>Could not read page 7.</b> The PDF is encrypted.</div>
+        <div class="row"><button class="aer-button aer-quiet" id="toast-btn">Show a toast</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="surfaces" aria-labelledby="h-surfaces">
+    <h2 id="h-surfaces">Surfaces</h2>
+    <p>Frosted glass in light mode, smoked glass in dark mode. Each glass sprite is matted twice, once for each page tone. In Chromium the clear lens also bends what is behind its rim.</p>
+    <div class="grid">
+      <div class="stack">
+        <div class="aer-panel"><h3 style="margin-top:0">Panel</h3><p style="margin:0">Big frosted pane for grouping a tool's settings.</p></div>
+        <div class="row">
+          <button class="aer-button" id="dialog-btn">Open dialog</button>
+          <button class="aer-button aer-quiet" popovertarget="menu" id="menu-btn"><span class="aer-icon aer-icon-menu" aria-hidden="true"></span> Menu</button>
+          <div class="aer-popover" popover id="menu">
+            <div class="aer-menu">
+              <button><span class="aer-icon aer-s aer-icon-copy" aria-hidden="true"></span> Duplicate</button>
+              <button><span class="aer-icon aer-s aer-icon-download" aria-hidden="true"></span> Export…</button>
+              <button><span class="aer-icon aer-s aer-icon-lock" aria-hidden="true"></span> Protect with password</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lens-stage">
+        <div class="behind" aria-hidden="true">AERO</div>
+        <div class="aer-lens">Clear glass lens</div>
+      </div>
+    </div>
+    <h3>Before / after</h3>
+    <div class="aer-compare" style="max-inline-size: 720px; border-radius: 14px">
+      <img src="assets/compare-light.jpg" alt="The showcase in light mode" width="1440" height="720">
+      <img src="assets/compare-dark.jpg" alt="The same view in dark mode" width="1440" height="720">
+      <input type="range" min="0" max="100" value="50" aria-label="Reveal dark mode">
+    </div>
+  </section>
+
+  <section id="icons" aria-labelledby="h-icons">
+    <h2 id="h-icons">Icons</h2>
+    <p>Each glyph is drawn as a height map, embossed into a Bryce lattice, and rendered at 24 and 16 px, in aqua for standalone use and pearl for use on coloured buttons.</p>
+    <span class="on-aqua" aria-hidden="true"><span class="aer-icon aer-pearl aer-icon-heart"></span><span class="aer-icon aer-pearl aer-icon-play"></span><span class="aer-icon aer-pearl aer-icon-gear"></span></span>
+    <ul class="icons" style="margin-top: var(--aer-space-4)">
+      <li><span class="aer-icon aer-icon-heart" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-heart" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-heart" aria-hidden="true"></span><code>heart</code></li>
+      <li><span class="aer-icon aer-icon-heart-outline" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-heart-outline" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-heart-outline" aria-hidden="true"></span><code>heart-outline</code></li>
+      <li><span class="aer-icon aer-icon-close" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-close" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-close" aria-hidden="true"></span><code>close</code></li>
+      <li><span class="aer-icon aer-icon-menu" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-menu" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-menu" aria-hidden="true"></span><code>menu</code></li>
+      <li><span class="aer-icon aer-icon-arrow-left" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-arrow-left" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-arrow-left" aria-hidden="true"></span><code>arrow-left</code></li>
+      <li><span class="aer-icon aer-icon-arrow-right" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-arrow-right" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-arrow-right" aria-hidden="true"></span><code>arrow-right</code></li>
+      <li><span class="aer-icon aer-icon-chevron-down" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-chevron-down" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-chevron-down" aria-hidden="true"></span><code>chevron-down</code></li>
+      <li><span class="aer-icon aer-icon-swap" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-swap" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-swap" aria-hidden="true"></span><code>swap</code></li>
+      <li><span class="aer-icon aer-icon-play" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-play" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-play" aria-hidden="true"></span><code>play</code></li>
+      <li><span class="aer-icon aer-icon-help" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-help" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-help" aria-hidden="true"></span><code>help</code></li>
+      <li><span class="aer-icon aer-icon-info" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-info" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-info" aria-hidden="true"></span><code>info</code></li>
+      <li><span class="aer-icon aer-icon-error" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-error" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-error" aria-hidden="true"></span><code>error</code></li>
+      <li><span class="aer-icon aer-icon-warning" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-warning" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-warning" aria-hidden="true"></span><code>warning</code></li>
+      <li><span class="aer-icon aer-icon-gear" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-gear" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-gear" aria-hidden="true"></span><code>gear</code></li>
+      <li><span class="aer-icon aer-icon-undo" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-undo" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-undo" aria-hidden="true"></span><code>undo</code></li>
+      <li><span class="aer-icon aer-icon-redo" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-redo" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-redo" aria-hidden="true"></span><code>redo</code></li>
+      <li><span class="aer-icon aer-icon-plus" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-plus" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-plus" aria-hidden="true"></span><code>plus</code></li>
+      <li><span class="aer-icon aer-icon-minus" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-minus" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-minus" aria-hidden="true"></span><code>minus</code></li>
+      <li><span class="aer-icon aer-icon-fit" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-fit" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-fit" aria-hidden="true"></span><code>fit</code></li>
+      <li><span class="aer-icon aer-icon-search" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-search" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-search" aria-hidden="true"></span><code>search</code></li>
+      <li><span class="aer-icon aer-icon-download" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-download" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-download" aria-hidden="true"></span><code>download</code></li>
+      <li><span class="aer-icon aer-icon-upload" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-upload" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-upload" aria-hidden="true"></span><code>upload</code></li>
+      <li><span class="aer-icon aer-icon-copy" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-copy" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-copy" aria-hidden="true"></span><code>copy</code></li>
+      <li><span class="aer-icon aer-icon-check" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-check" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-check" aria-hidden="true"></span><code>check</code></li>
+      <li><span class="aer-icon aer-icon-file" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-file" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-file" aria-hidden="true"></span><code>file</code></li>
+      <li><span class="aer-icon aer-icon-pdf" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-pdf" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-pdf" aria-hidden="true"></span><code>pdf</code></li>
+      <li><span class="aer-icon aer-icon-text" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-text" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-text" aria-hidden="true"></span><code>text</code></li>
+      <li><span class="aer-icon aer-icon-image" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-image" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-image" aria-hidden="true"></span><code>image</code></li>
+      <li><span class="aer-icon aer-icon-code" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-code" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-code" aria-hidden="true"></span><code>code</code></li>
+      <li><span class="aer-icon aer-icon-clock" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-clock" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-clock" aria-hidden="true"></span><code>clock</code></li>
+      <li><span class="aer-icon aer-icon-colour" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-colour" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-colour" aria-hidden="true"></span><code>colour</code></li>
+      <li><span class="aer-icon aer-icon-pin" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-pin" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-pin" aria-hidden="true"></span><code>pin</code></li>
+      <li><span class="aer-icon aer-icon-lock" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-lock" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-lock" aria-hidden="true"></span><code>lock</code></li>
+      <li><span class="aer-icon aer-icon-sun" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-sun" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-sun" aria-hidden="true"></span><code>sun</code></li>
+      <li><span class="aer-icon aer-icon-moon" aria-hidden="true"></span><span class="aer-icon aer-s aer-icon-moon" aria-hidden="true"></span><span class="aer-icon aer-pearl aer-icon-moon" aria-hidden="true"></span><code>moon</code></li>
+    </ul>
+  </section>
+
+  <footer>
+    Aerolith, MIT licensed. Sprites rendered with Bryce 2 under Wine. Bryce is a trademark of its owner; this project is not affiliated.
+    <a href="https://github.com/immineal/aerolith">Source and docs on GitHub</a>.
+  </footer>
+</main>
+
+<dialog class="aer-dialog" id="dialog" aria-labelledby="dlg-title">
+  <header><span id="dlg-title">Merge 4 files?</span>
+    <button class="aer-close" aria-label="Close" data-close><span class="aer-icon aer-s aer-icon-close" aria-hidden="true"></span></button></header>
+  <p style="margin-top:0">The pages are combined in the order shown. You can still reorder them afterwards.</p>
+  <div class="row" style="justify-content:flex-end">
+    <button class="aer-button aer-quiet" data-close>Cancel</button>
+    <button class="aer-button aer-secondary" data-close>Merge</button>
+  </div>
+</dialog>
+<div class="aer-toaster" role="status" aria-live="polite"></div>
+
+<script src="dist/aerolith.js"></script>
+<script>
+  document.getElementById('mixed').indeterminate = true;
+  const dlg = document.getElementById('dialog');
+  document.getElementById('dialog-btn').onclick = () => dlg.showModal();
+  dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
+  document.getElementById('toast-btn').onclick = () => {
+    const t = document.createElement('div');
+    t.className = 'aer-toast';
+    t.innerHTML = '<span class="aer-orb"></span> 4 files merged into report.pdf';
+    document.querySelector('.aer-toaster').append(t);
+    setTimeout(() => t.remove(), 4000);
+  };
+  // the section nav marks the section in view
+  const links = [...document.querySelectorAll('.top nav a')];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(a => a.setAttribute('aria-current', a.hash === '#' + e.target.id ? 'true' : 'false'));
+  }), { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('main section').forEach(s => io.observe(s));
+</script>
+</body>
+</html>
