@@ -12,5 +12,6 @@ DEST.mkdir(parents=True)
 for name in ("aerolith.css", "aerolith.js", "sprites.json"):
     shutil.copy2(DIST / name, DEST / name)
 shutil.copytree(DIST / "sprites", DEST / "sprites")
+shutil.copytree(DIST / "fonts", DEST / "fonts")
 shutil.copy2(HERE.parent / "LICENSE", HERE / "LICENSE")
 print(f"staged {sum(1 for _ in DEST.rglob('*'))} files -> {DEST}")

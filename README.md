@@ -23,9 +23,9 @@ There's no build step. Link the stylesheet, and the script if you want the extra
 ```
 
 jsDelivr also serves the files straight from GitHub
-(`https://cdn.jsdelivr.net/gh/immineal/aerolith@v1.0.0/library/dist/aerolith.css`), and the
-release zip has them too. If you host them yourself, keep `sprites/` next to `aerolith.css`,
-because the CSS looks for the images relative to itself.
+(`https://cdn.jsdelivr.net/gh/immineal/aerolith@v1.1.0/library/dist/aerolith.css`), and the
+release zip has them too. If you host them yourself, keep `sprites/` and `fonts/` next to
+`aerolith.css`, because the CSS looks for the images and fonts relative to itself.
 
 Then put the classes on ordinary elements:
 
@@ -102,6 +102,35 @@ call `window.Aerolith.init(container)` so the script picks them up.
 | `.aer-bar` | `<header>`, `<nav>` | |
 | `.aer-lens` | any block | rim refraction in Chromium |
 | `.aer-compare` | two `<img>` and an `<input type="range">` | |
+| `.aer-display` (+ `.aer-aqua`, `.aer-glass`, `.aer-pearl`) | any heading | 116 characters, Latin with German and French accents |
+
+### Type
+
+Titles are set in **Aerolith Display**, gel letters I rendered in Bryce one by one, like the
+buttons. They're packed into a colour font, so a title is still real text that you can select,
+search and read with a screen reader. The letters are rendered at about 80 px per em and look best
+from 32 px up, so use them for headings, not paragraphs.
+
+```html
+<h1 class="aer-display">Welcome back</h1>            <!-- aqua; clear glass on dark pages -->
+<h2 class="aer-display aer-glass">Photos</h2>        <!-- clear glass: put colour or a photo behind it -->
+<p class="aer-display aer-pearl">Ready</p>           <!-- white, for coloured or photo backgrounds -->
+<p class="aer-display aer-aqua">Inbox</p>            <!-- aqua even on a dark page -->
+```
+
+Glass is see-through, so on a plain pale page it all but disappears. On dark pages a plain
+`.aer-display` switches to the glass face, because the deep aqua blue sinks into the dark
+background there.
+
+Each material is two files: OpenType-SVG for Firefox and Safari, sbix bitmaps for Chrome and
+Edge. The CSS lists both with `tech()`, so a browser downloads only the one it can draw: about
+0.6 MB per material, and only for the materials a page actually uses. A browser without colour
+fonts shows the same title in heavy Istok.
+
+Everything else is set in **Istok Web**, bundled. If you prefer the Windows Vista and 7 look, put
+`data-aer-type="selawik"` on `<html>` (or any container) to switch to **Selawik**, Microsoft's
+open stand-in for Segoe UI. `.aer-glow` puts a soft halo of page colour behind text on busy
+backgrounds, like Vista's window titles.
 
 Dark mode follows the system setting. To force it, set `<html data-theme="dark">` (or `"light"`),
 or put `.aer-dark` on one part of the page. The sun and moon switch (`input[data-aer-theme]`) sets
@@ -191,8 +220,14 @@ How to set up the renderer is in [harness/README.md](harness/README.md). The des
 - **No React or Vue components.** You put the classes on your own elements.
 - **No icon font or SVGs.** The 35 icons are bitmaps at 16 and 24 px, and they get blurry if
   you scale them up.
+- **The display face is for titles.** Its letters are bitmaps too: sharp up to about 120 px on
+  a 2x screen, soft beyond that, and hard to read below 24 px. It covers Latin letters, digits,
+  common punctuation and German and French accents, nothing else.
 
 ## License
 
-MIT, for the code and the sprites. See [LICENSE](LICENSE). Bryce is a trademark of its owner.
+MIT, for the code and the sprites. See [LICENSE](LICENSE). The fonts in `library/dist/fonts/` are
+under the SIL Open Font License 1.1, and their licence files sit next to them. Istok Web is by
+Andrey V. Panov and Selawik by Microsoft; both ship unmodified. Aerolith Display is derived from
+Istok Web Bold, so it is OFL too. Bryce is a trademark of its owner.
 Aerolith has nothing to do with them officially and contains no part of the Bryce software.

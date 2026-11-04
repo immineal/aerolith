@@ -18,7 +18,7 @@ jobs:
         run: |
           V="${GITHUB_REF_NAME#v}"
           mkdir -p "aerolith-$V"
-          cp -r library/dist/aerolith.css library/dist/aerolith.js library/dist/sprites library/dist/sprites.json LICENSE "aerolith-$V/"
+          cp -r library/dist/aerolith.css library/dist/aerolith.js library/dist/sprites library/dist/fonts library/dist/sprites.json LICENSE "aerolith-$V/"
           printf 'Aerolith %s\n\nLink aerolith.css (and optionally aerolith.js); keep sprites/ next to it.\nDocs: https://github.com/immineal/aerolith\n' "$V" > "aerolith-$V/README.txt"
           zip -qr "aerolith-$V.zip" "aerolith-$V"
       - name: Attach it to the release

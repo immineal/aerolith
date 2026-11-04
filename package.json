@@ -1,6 +1,6 @@
 {
   "name": "aerolith",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Glossy buttons and real glass for the web, in the Frutiger Aero style. Every sprite rendered in Bryce 2 (1996) and laid over plain HTML.",
   "keywords": [
     "frutiger-aero", "css", "ui", "ui-library", "design-system", "skeuomorphism", "glassmorphism",
@@ -22,13 +22,15 @@
     "./aerolith.js": "./library/dist/aerolith.js",
     "./sprites/*": "./library/dist/sprites/*",
     "./sprites.json": "./library/dist/sprites.json",
+    "./fonts/*": "./library/dist/fonts/*",
     "./package.json": "./package.json"
   },
   "files": [
     "library/dist/aerolith.css",
     "library/dist/aerolith.js",
     "library/dist/sprites.json",
-    "library/dist/sprites/"
+    "library/dist/sprites/",
+    "library/dist/fonts/"
   ],
   "sideEffects": ["*.css", "./library/dist/aerolith.js"]
 }
