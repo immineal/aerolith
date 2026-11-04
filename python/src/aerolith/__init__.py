@@ -11,7 +11,7 @@ FastAPI / Starlette: ``app.mount("/aerolith", StaticFiles(directory=static_dir()
 """
 from pathlib import Path
 
-__version__ = "1.3.2"
+__version__ = "1.3.3"
 __all__ = ["static_dir", "css_path", "js_path", "__version__"]
 
 

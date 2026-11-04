@@ -1,0 +1,16 @@
+# What `composer require immineal/aerolith` downloads. Composer takes GitHub's source zipball, and
+# only export-ignore keeps files out of it (composer.json "archive.exclude" is for `composer archive`).
+# What stays: library/dist (the files to serve), library/index.html, README, LICENSE, CHANGELOG.
+# CI uses plain checkouts, so none of this affects the build, Pages or the registry publishes.
+/.github        export-ignore
+/.gitattributes export-ignore
+/.gitignore     export-ignore
+/bry            export-ignore
+/docs           export-ignore
+/fonts          export-ignore
+/harness        export-ignore
+/python         export-ignore
+/library/assets export-ignore
+/library/build  export-ignore
+/library/lookdev export-ignore
+/library/src    export-ignore

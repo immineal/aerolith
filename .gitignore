@@ -3,6 +3,7 @@
 # are local-only and never committed.
 /*
 !/.gitignore
+!/.gitattributes
 !/.github/
 !/README.md
 !/LICENSE

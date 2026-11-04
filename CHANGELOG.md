@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.3 (2026-11-04)
+
+- Composer: `composer require immineal/aerolith` now downloads 9.5 MB instead of 22 MB. A `.gitattributes` keeps the
+  Bryce harness, sources, docs and desktop fonts out of GitHub's source zipball; `library/dist` is unchanged.
+
 ## 1.3.2 (2026-11-04)
 
 - Fields: a soft rounded halo around the aqua rim marks focus, so it shows in light mode too.

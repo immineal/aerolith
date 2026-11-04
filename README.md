@@ -39,7 +39,7 @@ example of every component. Self-hosting: keep `sprites/` and `fonts/` next to `
 | GitHub Packages | `npm i @immineal/aerolith --registry=https://npm.pkg.github.com` | same |
 | Composer | `composer require immineal/aerolith` | serve `vendor/immineal/aerolith/library/dist/` |
 | PyPI | `pip install aerolith` | `aerolith.static_dir()`; Django: add `"aerolith"` to `INSTALLED_APPS` |
-| CDN | jsDelivr, unpkg, esm.sh | or `cdn.jsdelivr.net/gh/immineal/aerolith@v1.3.2/library/dist/aerolith.css` |
+| CDN | jsDelivr, unpkg, esm.sh | or `cdn.jsdelivr.net/gh/immineal/aerolith@v1.3.3/library/dist/aerolith.css` |
 
 React, Vue, Svelte, Astro: import the CSS once in your entry file and use the classes
 (`className` in JSX). Content added after load needs `window.Aerolith.init(container)`.
