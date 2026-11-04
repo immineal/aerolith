@@ -219,10 +219,14 @@ def render_sheet(out: str | Path, build, width: int, timeout: float = 3 * 3600, 
     return {mode: scene.with_suffix(".bmp") for mode, scene in scenes.items()}
 
 
-def matte(bmps: dict, ss: int = 1, rim: float = 0.5, despeckle: int = 5, over: str = "light") -> np.ndarray:
+def matte(bmps: dict, ss: int = 1, rim: float = 0.5, despeckle: int = 5, over: str = "light",
+          outline: np.ndarray | None = None) -> np.ndarray:
     """Solid objects: alpha = silhouette coverage; their colour mixes the black- and white-backdrop
     renders (`rim` = how much of the white backdrop their grazing reflections show).
-    Glass: difference matte (partial alpha), clamped to the silhouette."""
+    Glass: difference matte (partial alpha), clamped to the silhouette.
+    outline: exact coverage (sheet pixels) to use instead of the rendered silhouette, whose edge
+    follows the lattice grid in steps. Edge colours are then taken from the nearest fully covered
+    pixel and weighted by the new coverage."""
     k, w, m = (sprites.load(bmps[x]) for x in "kwm")
     cov = np.clip(m[..., 0] + m[..., 1], 0, 1)
     if despeckle:
@@ -239,6 +243,12 @@ def matte(bmps: dict, ss: int = 1, rim: float = 0.5, despeckle: int = 5, over: s
     level = float(np.median(w[empty].mean(1))) if empty.any() else 1.0
     w = k + (w - k) / max(level, 1e-3)          # what the pass would be on pure white, unclipped
     g = np.where(cov > 1e-6, m[..., 1] / np.maximum(cov, 1e-6), 0.0)[..., None]
+    if outline is not None:
+        from scipy import ndimage
+        iy, ix = ndimage.distance_transform_edt(cov < 0.999, return_distances=False, return_indices=True)
+        cov = np.clip(outline, 0, 1)
+        c = cov[..., None]
+        k, w, g = k[iy, ix] * c, w[iy, ix] * c + (1 - c), g[iy, ix]   # as if rendered with that edge
     d = np.clip(1.0 - (w - k).mean(2), 0, 1)
     # Glass = transmission T plus additive light K (reflections, glints): out = K + T*bg. Straight
     # alpha can hold that only while K <= 1 - T, so the matte is tuned to the page it will sit on:

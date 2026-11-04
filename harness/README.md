@@ -85,6 +85,44 @@ wine/bryce2       the Bryce 2 program folder
 work/             exchange folder (W:\ inside Bryce): scenes in, BMP renders out
 ```
 
+## Watching renders
+
+`tools/watch.py` shows every pool display (`POOL`) live in a browser, plus a history of finished
+renders, read-only:
+
+```
+python3 harness/tools/watch.py            # http://127.0.0.1:6080/ ; --port, --displays :77,:78
+kill <PID>                                # the PID is printed on start; stop it by PID
+```
+
+**Live view.** One tile per Xvfb display (click a tile for full size, refresh 1/2/5 s). Frames are
+plain X11 screenshots (Pillow `ImageGrab`) taken only while a browser asks for them, so an unwatched
+viewer costs nothing. A black tile means the instance is idle: Bryce is stopped between jobs while
+its Xvfb stays up.
+
+**Render history** (the "Recent renders" section; the `view` selector switches between live,
+history and both). Newest first, polled every 4 s, 24/48/96 cards, filter by source:
+
+- `work/lib/` (render cache): the `<name>_k/_w/_m.bmp` passes (black, white, mask) are grouped into one card.
+- `work/sheets/` (older lookdev renders, NTFS archive, scanned only every 15 s) and
+  `library/dist/sprites/` (PNG/WebP; the `@2x` variant is shown, the others are links).
+- Click a thumbnail for the full-size image (BMP is served as PNG), click again for 1:1, arrow keys
+  step through, Esc closes. Override the directories with `--lib`, `--sheets`, `--sprites`.
+- Endpoints: `/renders.json?src=all|lib|sheets|sprites&n=48`, `/thumb/<src>/<file>?w=240`,
+  `/full/<src>/<file>`. Only files that were listed (regular files directly inside those three
+  directories, `.bmp/.png/.webp`) can be fetched; anything else is a 404.
+- Thumbnails and full-size PNGs are made with Pillow on request and kept in a 64 MB in-memory LRU
+  keyed by path and mtime. Nothing is written to disk, least of all to `work/lib`.
+- Cost: one `os.scandir` per directory every 3 s (about 13 ms CPU for `work/lib`), and only while a
+  browser polls; after 30 s without a request the scanners stop touching the disk. A file is listed
+  only once its size and mtime are unchanged since the previous scan and its header says it is
+  complete (BMP pixel data, PNG `IEND`, WebP length), so a new render shows up 3 to 6 s after it is
+  written. The process runs at nice 10 and converts one image at a time.
+
+Neither view has any input path: nothing is sent to Xvfb, Wine or Bryce, so it is safe to run
+during renders. It binds to 127.0.0.1 only and rejects other `Host` headers; to see it from
+another machine use an SSH tunnel (`ssh -L 6080:127.0.0.1:6080 host`).
+
 ## Win98 VM backend (the authentic reference)
 
 Before the Wine path, Bryce 2.1 ran in a Windows 98 SE QEMU VM driven by this harness. It is

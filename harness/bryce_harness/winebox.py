@@ -207,12 +207,17 @@ class WineBryce:
     # ------------------------------------------------------------ paths
     @staticmethod
     def guest_path(host: str | Path) -> str:
-        """Host path under work/ or build/cd -> Bryce-side path (W:\\..., R:\\...)."""
-        p = Path(host).resolve()
-        for root, drive in ((WORK.resolve(), "W:"), ((ROOT / "build" / "cd").resolve(), "R:")):
-            try:
-                rel = p.relative_to(root)
-                return drive + "\\" + str(rel).replace("/", "\\")
-            except ValueError:
-                pass
+        """Host path under work/ or build/cd -> Bryce-side path (W:\\..., R:\\...).
+        Symlinks below work/ (e.g. a cache moved to another disk) are kept as they are: Wine
+        follows them from W: the same way the host does."""
+        import os
+        roots = ((WORK, "W:"), (ROOT / "build" / "cd", "R:"))
+        for p, rp in ((Path(os.path.abspath(host)), lambda r: Path(os.path.abspath(r))),
+                      (Path(host).resolve(), Path.resolve)):
+            for root, drive in roots:
+                try:
+                    rel = p.relative_to(rp(root))
+                    return drive + "\\" + str(rel).replace("/", "\\")
+                except ValueError:
+                    pass
         raise ValueError(f"{host} is not under work/ or build/cd/")
