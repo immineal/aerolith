@@ -1,3 +1,9 @@
+Aerolith Display is derived from Istok Web Bold by Andrey V. Panov. The outlines were made
+heavier and each glyph was rendered in Bryce; it is a Modified Version under the SIL Open
+Font License 1.1 below and does not use the Reserved Font Name "Istok".
+
+Copyright (c) 2026, Immineal (colour glyphs).
+
 Copyright (c) 2008-2012, 2014, Andrey V. Panov (panov@canopus.iacp.dvo.ru),
 with Reserved Font Name Istok.
 

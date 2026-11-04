@@ -1,6 +1,6 @@
 {
   "name": "aerolith",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Tactile UI for the web, rendered in Bryce 2 and laid over plain HTML.",
   "keywords": [
     "tactile", "css", "ui", "ui-library", "design-system", "skeuomorphism", "glassmorphism",

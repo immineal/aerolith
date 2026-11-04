@@ -39,7 +39,7 @@ example of every component. Self-hosting: keep `sprites/` and `fonts/` next to `
 | GitHub Packages | `npm i @immineal/aerolith --registry=https://npm.pkg.github.com` | same |
 | Composer | `composer require immineal/aerolith` | serve `vendor/immineal/aerolith/library/dist/` |
 | PyPI | `pip install aerolith` | `aerolith.static_dir()`; Django: add `"aerolith"` to `INSTALLED_APPS` |
-| CDN | jsDelivr, unpkg, esm.sh | or `cdn.jsdelivr.net/gh/immineal/aerolith@v1.2.0/library/dist/aerolith.css` |
+| CDN | jsDelivr, unpkg, esm.sh | or `cdn.jsdelivr.net/gh/immineal/aerolith@v1.3.0/library/dist/aerolith.css` |
 
 React, Vue, Svelte, Astro: import the CSS once in your entry file and use the classes
 (`className` in JSX). Content added after load needs `window.Aerolith.init(container)`.
@@ -49,7 +49,7 @@ React, Vue, Svelte, Astro: import the CSS once in your entry file and use the cl
 | Class | On | States |
 |---|---|---|
 | `.aer-button` (+ `.aer-secondary`, `.aer-quiet`; `.aer-s`, `.aer-l`) | `<button>`, `<a>` | hover, pressed, `aria-pressed`, disabled |
-| `.aer-iconbtn` (+ `.aer-quiet`) | `<button>` with an `.aer-icon` | hover, pressed |
+| `.aer-iconbtn` (+ `.aer-quiet`) | `<button>` with an `.aer-icon` | hover, pressed, `aria-pressed` (`data-aer-toggle` flips it on click; a heart turns to its outline when off) |
 | `.aer-icon .aer-icon-<name>` (+ `.aer-s`, `.aer-pearl`) | `<span aria-hidden="true">` | 35 glyphs, 24/16 px |
 | `.aer-toggle` (+ `.aer-theme`) | `<input type="checkbox" role="switch">` | on, disabled |
 | `.aer-check`, `.aer-radio` | checkbox, radio | checked, mixed, disabled |
@@ -81,10 +81,13 @@ React, Vue, Svelte, Astro: import the CSS once in your entry file and use the cl
 
 Aerolith Display is a colour font of rendered gel letters, so titles stay real, selectable text.
 Use it from 32 px up. Each material is about 0.6 MB, loaded only where used. Browsers without
-colour fonts show heavy Istok.
+colour fonts show plain heavy letters.
 
 Body text is **Aerolith Text**, Selawik (an open Segoe UI stand-in) with a kern table, because Selawik
-ships without kerning. `data-aer-type="istok"` switches to **Istok Web**. Dark mode follows the system; `data-theme="dark"` or `"light"` on `<html>` forces it,
+ships without kerning. Both fonts are also in [`fonts/`](fonts/) as TTF files for your computer
+([download](https://github.com/immineal/aerolith/releases/latest/download/aerolith-fonts.zip)).
+
+Dark mode follows the system; `data-theme="dark"` or `"light"` on `<html>` forces it,
 and the sun/moon switch (`input[data-aer-theme]`) sets that for you.
 
 ## Accessibility
@@ -138,8 +141,7 @@ Setup: [harness/README.md](harness/README.md). Design rules:
 
 ## License
 
-MIT for code and sprites ([LICENSE](LICENSE)). Fonts in `library/dist/fonts/` are SIL OFL 1.1:
-Istok Web (Andrey V. Panov) unmodified; Aerolith Text, derived from Selawik (Microsoft) with a kern
-table added and renamed because the OFL reserves "Selawik"; Aerolith Display, derived from
-Istok Web Bold. Bryce is a trademark of its owner; Aerolith is not affiliated and contains no
+MIT for code and sprites ([LICENSE](LICENSE)). The fonts in `library/dist/fonts/` and `fonts/` are
+SIL OFL 1.1: Aerolith Text, derived from Selawik (Microsoft) with a kern table added and renamed
+because the OFL reserves "Selawik"; Aerolith Display, derived from Istok Web Bold (Andrey V. Panov). Bryce is a trademark of its owner; Aerolith is not affiliated and contains no
 Bryce code.

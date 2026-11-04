@@ -145,7 +145,7 @@
       <div class="row">
         <button class="aer-iconbtn" aria-label="Settings"><span class="aer-icon aer-icon-gear" aria-hidden="true"></span></button>
         <button class="aer-iconbtn" aria-label="Play"><span class="aer-icon aer-icon-play" aria-hidden="true"></span></button>
-        <button class="aer-iconbtn" aria-label="Favourite" aria-pressed="true"><span class="aer-icon aer-icon-heart" aria-hidden="true"></span></button>
+        <button class="aer-iconbtn" aria-label="Favourite" aria-pressed="true" data-aer-toggle><span class="aer-icon aer-icon-heart" aria-hidden="true"></span></button>
         <button class="aer-iconbtn aer-quiet" aria-label="Search"><span class="aer-icon aer-icon-search" aria-hidden="true"></span></button>
         <button class="aer-iconbtn aer-quiet" aria-label="Undo"><span class="aer-icon aer-icon-undo" aria-hidden="true"></span></button>
         <button class="aer-iconbtn aer-quiet" aria-label="Redo"><span class="aer-icon aer-icon-redo" aria-hidden="true"></span></button>
@@ -308,18 +308,14 @@
       <span class="on-sky"><span class="aer-display aer-glass" style="font-size: 4rem">Glass</span></span>
       <span class="on-aqua big"><span class="aer-display aer-pearl" style="font-size: 4rem">Pearl</span></span>
     </div>
-    <h3>Text face</h3>
-    <fieldset class="aer-segmented" aria-label="Text face" id="type-switch">
-      <label><input type="radio" name="face" value="selawik" checked> Aerolith Text</label>
-      <label><input type="radio" name="face" value="istok"> Istok Web</label>
-    </fieldset>
-    <div class="specimen" style="margin-top: var(--aer-space-4)">
+    <div class="specimen" style="margin-top: var(--aer-space-5)">
       <div class="sizes">
         <span style="font-size: var(--aer-text-s)">Small print, 14&nbsp;px: Seite 3 von 12 · Größe 2,4&nbsp;MB</span>
         <span style="font-size: var(--aer-text-l); font-weight: 700">Bold, 19&nbsp;px: Quarterly report 2007</span>
         <span style="font-size: var(--aer-text-2xl)"><em>Italic, 28&nbsp;px: the sky in every button</em></span>
       </div>
     </div>
+    <p style="margin-top: var(--aer-space-5)"><a class="aer-button aer-quiet" href="https://github.com/immineal/aerolith/releases/latest/download/aerolith-fonts.zip"><span class="aer-icon aer-icon-download" aria-hidden="true"></span> Download the fonts</a></p>
   </section>
 
   <footer>
@@ -383,15 +379,6 @@
     clearTimeout(settle); settle = setTimeout(() => { pinned = null; }, 600);   // no scroll at all: unpin anyway
   });
   spy();
-  // text face switch: Aerolith Text (default) or Istok Web, remembered
-  const face = (v) => { if (v === 'istok') document.documentElement.dataset.aerType = v; else delete document.documentElement.dataset.aerType; };
-  let saved = null;
-  try { saved = localStorage.getItem('aerolith-type'); } catch (e) {}
-  if (saved) { face(saved); const r = document.querySelector(`#type-switch input[value="${saved}"]`); if (r) r.checked = true; }
-  document.getElementById('type-switch').addEventListener('change', (e) => {
-    face(e.target.value);
-    try { localStorage.setItem('aerolith-type', e.target.value); } catch (err) {}
-  });
 </script>
 <script type="application/json" id="sky-keys">
 {

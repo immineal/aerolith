@@ -7,6 +7,7 @@
 //     data-aer-drag makes it movable
 //   - menus: popovers drop down from their button; [data-aer-menu] opens one at the pointer
 //   - segmented: the selected chip slides between items
+//   - toggle: [data-aer-toggle] flips aria-pressed on click (a heart icon inside turns to outline)
 //   - preload: sprites of closed dialogs and popovers load with the page
 (function () {
   "use strict";
@@ -374,6 +375,13 @@
         var t = input.checked ? "dark" : "light";
         try { localStorage.setItem(KEY, t); } catch (e) {}
         applyTheme(t);
+      });
+    });
+    root.querySelectorAll("[data-aer-toggle]").forEach(function (b) {
+      if (!once(b, "aerToggle")) return;
+      if (!b.hasAttribute("aria-pressed")) b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true");
       });
     });
     root.querySelectorAll(".aer-lens").forEach(function (el) { if (once(el, "aerBound")) lens(el); });

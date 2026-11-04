@@ -21,7 +21,7 @@
   --aer-target-gap: var(--aer-space-2);
 
   /* type: modular scale 1.2 */
-  --aer-font-ui: "Aerolith Text", "Selawik", "Segoe UI", "Istok Web", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
+  --aer-font-ui: "Aerolith Text", "Selawik", "Segoe UI", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
   --aer-font-text: var(--aer-font-ui);
   --aer-font-mono: "Consolas", "Lucida Console", ui-monospace, monospace;
   --aer-text-xs: 0.833rem;
@@ -107,21 +107,11 @@
 
 /* ---- type.css ---- */
 /* Aerolith type.
-   Text: Aerolith Text (default; Selawik with a kern table, renamed because the OFL reserves "Selawik")
-   or Istok Web (data-aer-type="istok"), both bundled, both SIL OFL 1.1.
+   Text: Aerolith Text, Selawik with a kern table (renamed because the OFL reserves "Selawik"), SIL OFL 1.1.
    Titles: Aerolith Display, gel letters rendered in Bryce and packed into colour fonts. Each
    material comes as OpenType-SVG (Firefox, Safari) and sbix (Chromium); tech() makes a browser
    download only the file it can draw. The fonts keep outlines, so a browser without colour-font
-   support still shows the title, in plain heavy Istok. */
-
-@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-regular.woff2) format("woff2");
-  font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-italic.woff2) format("woff2");
-  font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-bold.woff2) format("woff2");
-  font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-bold-italic.woff2) format("woff2");
-  font-weight: 700; font-style: italic; font-display: swap; }
+   support still shows the title as plain heavy letters. */
 
 @font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-light.woff2) format("woff2");
   font-weight: 300; font-display: swap; }
@@ -144,10 +134,6 @@
 @font-face { font-family: "Aerolith Display Pearl"; font-display: swap;
   src: url(fonts/aerolith-display-pearl.svg.woff2) format("woff2") tech(color-SVG),
        url(fonts/aerolith-display-pearl.bmp.woff2) format("woff2") tech(color-sbix); }
-
-[data-aer-type="istok"], .aer-type-istok {
-  --aer-font-ui: "Istok Web", "Aerolith Text", "Segoe UI", Tahoma, system-ui, sans-serif;
-}
 
 /* Big titles only: the letters are rendered at about 80 px per em and read best from 32 px up.
    Weight 700 picks the bold text face while the font loads; the colour face itself has one weight and is
@@ -1607,6 +1593,8 @@ a.aer-card:hover, button.aer-card:hover, .aer-card[data-interactive]:hover {
   --_n: var(--aer-iconbtn-glass-active); --_o: var(--aer-iconbtn-glass-active-outset);
 }
 .aer-iconbtn:disabled { opacity: 0.5; filter: saturate(0.2); cursor: not-allowed; }
+/* A toggle that is not pressed shows the heart as an outline. */
+[aria-pressed="false"] > .aer-icon-heart { --_i: 1; }
 
 /* ------------------------------------------------------------------ segmented control / tab bar
    <div class="aer-segmented" role="radiogroup" aria-label="View">

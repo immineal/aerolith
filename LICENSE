@@ -21,9 +21,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 The rendered sprite images in library/dist/ are covered by the same license.
-The fonts in library/dist/fonts/ are not: they are under the SIL Open Font
-License 1.1 (Istok Web, Aerolith Text, which is derived from Selawik, and
+The fonts in library/dist/fonts/ and fonts/ are not: they are under the SIL
+Open Font License 1.1 (Aerolith Text, which is derived from Selawik, and
 Aerolith Display, which is derived from Istok Web). Their license files are in
-that folder.
+those folders.
 Bryce is a trademark of its respective owner. This project is not affiliated
 with or endorsed by it, and contains no part of the Bryce software.

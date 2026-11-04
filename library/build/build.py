@@ -319,10 +319,6 @@ def strip(entries: dict, name: str, frames: int, margin: int = 3) -> list[str]:
 
 
 FONTS = Path(__file__).resolve().parent / "fonts"
-TEXT_FONTS = {   # dist name -> source (unmodified; Istok converted TTF -> WOFF2)
-    "istok-web-regular.woff2": "IstokWeb-Regular.ttf", "istok-web-italic.woff2": "IstokWeb-Italic.ttf",
-    "istok-web-bold.woff2": "IstokWeb-Bold.ttf", "istok-web-bold-italic.woff2": "IstokWeb-BoldItalic.ttf",
-}
 
 
 def text_fonts(out: Path):
@@ -345,27 +341,43 @@ def text_fonts(out: Path):
         "Copyright (c) 2026, Immineal (kern table).\n\n" + (FONTS / "OFL-Selawik.txt").read_text())
 
 
+FONT_PACKAGE = Path(__file__).resolve().parents[2] / "fonts"
+DISPLAY_NAMES = {"aqua": "Aqua", "glass": "Glass", "glass-dark": "Glass-Dark", "pearl": "Pearl"}
+
+
+def font_package():
+    """fonts/ at the repo root: Aerolith Text and Aerolith Display as TTF files to install on a
+    computer, with their licences. The release workflow zips this folder as aerolith-fonts.zip.
+    Display uses the OpenType-SVG files (Windows, macOS, Adobe apps, Firefox); sbix is only for
+    Chromium on the web."""
+    from fontTools.ttLib import TTFont
+    import kern
+    src = EX.DIST / "fonts"
+    FONT_PACKAGE.mkdir(exist_ok=True)
+    for old in FONT_PACKAGE.glob("*.ttf"):
+        old.unlink()
+    files = [(src / f"aerolith-text-{st}.woff2", f"AerolithText-{st.capitalize()}.ttf") for st in kern.WEIGHTS]
+    files += [(src / f"aerolith-display-{m}.svg.woff2", f"AerolithDisplay-{n}.ttf") for m, n in DISPLAY_NAMES.items()]
+    for woff, ttf in files:
+        f = TTFont(str(woff))
+        f.flavor = None
+        f.save(str(FONT_PACKAGE / ttf))
+    for lic in ("OFL-Aerolith-Text.txt", "OFL-Aerolith-Display.txt"):
+        (FONT_PACKAGE / lic).write_bytes((src / lic).read_bytes())
+    return [t for _, t in files]
+
+
 def fonts(entries: dict):
     """dist/fonts: the bundled text faces and the Aerolith Display colour fonts (built from the
-    type-* parts when all of them have been rendered)."""
-    import shutil
-    from fontTools.ttLib import TTFont
+    type-* parts when all of them have been rendered), then the fonts/ package."""
     import fontbuild
     import typeface
     out = EX.DIST / "fonts"
     out.mkdir(parents=True, exist_ok=True)
-    for dst, src in TEXT_FONTS.items():
-        d = out / dst
-        if d.exists() and d.stat().st_mtime >= (FONTS / src).stat().st_mtime:
-            continue
-        if src.endswith(".ttf"):
-            f = TTFont(str(FONTS / src))
-            f.flavor = "woff2"
-            f.save(str(d))
-        else:
-            shutil.copyfile(FONTS / src, d)
+    for old in out.glob("istok-web-*.woff2"):      # Istok Web is no longer bundled
+        old.unlink()
+    (out / "OFL-Istok-Web.txt").unlink(missing_ok=True)
     text_fonts(out)
-    shutil.copyfile(FONTS / "OFL-Istok.txt", out / "OFL-Istok-Web.txt")
     (out / "OFL-Aerolith-Display.txt").write_text(
         "Aerolith Display is derived from Istok Web Bold by Andrey V. Panov. The outlines were made\n"
         "heavier and each glyph was rendered in Bryce; it is a Modified Version under the SIL Open\n"
@@ -383,6 +395,7 @@ def fonts(entries: dict):
             print(f"Aerolith Display {mat}{dark}: {sizes}", flush=True)
         except KeyError as k:
             print(f"Aerolith Display {mat}{dark}: glyph {k} not rendered yet, font skipped", flush=True)
+    font_package()
 
 
 def fontbuild_styles():

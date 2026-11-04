@@ -20,7 +20,7 @@
   --aer-target-gap: var(--aer-space-2);
 
   /* type: modular scale 1.2 */
-  --aer-font-ui: "Aerolith Text", "Selawik", "Segoe UI", "Istok Web", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
+  --aer-font-ui: "Aerolith Text", "Selawik", "Segoe UI", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
   --aer-font-text: var(--aer-font-ui);
   --aer-font-mono: "Consolas", "Lucida Console", ui-monospace, monospace;
   --aer-text-xs: 0.833rem;

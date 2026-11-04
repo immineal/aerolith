@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0 (2026-11-04)
+
+- Istok Web is no longer bundled. Aerolith Text is the only text face; `data-aer-type="istok"`
+  and `dist/fonts/istok-web-*.woff2` are gone.
+- `fonts/` holds Aerolith Text and Aerolith Display as TTF files to install on a computer. Each
+  release attaches them as `aerolith-fonts.zip`, and the showcase links to it.
+- `data-aer-toggle` on a button flips `aria-pressed` on click. A heart icon inside a button that
+  is not pressed shows as an outline.
+
 ## 1.2.0 (2026-11-04)
 
 - Segmented controls and tab bars: with aerolith.js the selected chip slides to the new item

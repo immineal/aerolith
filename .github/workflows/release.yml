@@ -21,6 +21,7 @@ jobs:
           cp -r library/dist/aerolith.css library/dist/aerolith.js library/dist/sprites library/dist/fonts library/dist/sprites.json LICENSE "aerolith-$V/"
           printf 'Aerolith %s\n\nLink aerolith.css (and optionally aerolith.js); keep sprites/ next to it.\nDocs: https://github.com/immineal/aerolith\n' "$V" > "aerolith-$V/README.txt"
           zip -qr "aerolith-$V.zip" "aerolith-$V"
+          zip -qrj aerolith-fonts.zip fonts
       - name: Attach it to the release
         if: github.event_name == 'release'
         env:

@@ -294,6 +294,8 @@ a.aer-card:hover, button.aer-card:hover, .aer-card[data-interactive]:hover {
   --_n: var(--aer-iconbtn-glass-active); --_o: var(--aer-iconbtn-glass-active-outset);
 }
 .aer-iconbtn:disabled { opacity: 0.5; filter: saturate(0.2); cursor: not-allowed; }
+/* A toggle that is not pressed shows the heart as an outline. */
+[aria-pressed="false"] > .aer-icon-heart { --_i: 1; }
 
 /* ------------------------------------------------------------------ segmented control / tab bar
    <div class="aer-segmented" role="radiogroup" aria-label="View">
