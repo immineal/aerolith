@@ -39,15 +39,13 @@ jobs:
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
+      # trusted publishing (OIDC, no token): needs npm 11.5.1 or newer
+      - run: npm install -g npm@11
       - name: Publish to npm
         run: |
           V=$(node -p "require('./package.json').version")
           if npm view "aerolith@$V" version >/dev/null 2>&1; then echo "aerolith@$V is already on npm"; exit 0; fi
           npm publish --provenance --access public
-        env:
-          # First publish only: a granular token with "bypass 2FA". Later releases use trusted
-          # publishing (OIDC), which npm tries first; then this secret can be deleted.
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   github-packages:
     runs-on: ubuntu-latest

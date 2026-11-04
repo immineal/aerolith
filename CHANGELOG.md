@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1 (2026-11-04)
+
+- npm releases come straight from GitHub Actions through trusted publishing, with provenance
+  (npm shows which commit and workflow built the package). No package changes.
+
 ## 1.3.0 (2026-11-04)
 
 - Istok Web is no longer bundled. Aerolith Text is the only text face; `data-aer-type="istok"`
