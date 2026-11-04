@@ -7,7 +7,7 @@ from PIL import Image
 def backdrop(w, h, kind="aero"):
     y = np.linspace(0, 1, h)[:, None, None]
     x = np.linspace(0, 1, w)[None, :, None]
-    if kind == "aero":      # sky-to-grass Frutiger Aero gradient
+    if kind == "aero":      # sky-to-grass gradient
         top, mid, bot = np.array([0.45, 0.75, 1.0]), np.array([0.85, 0.95, 1.0]), np.array([0.55, 0.85, 0.35])
         c = np.where(y < 0.6, top + (mid - top) * (y / 0.6), mid + (bot - mid) * ((y - 0.6) / 0.4))
         return np.broadcast_to(c, (h, w, 3)).copy()

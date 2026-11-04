@@ -319,12 +319,30 @@ def strip(entries: dict, name: str, frames: int, margin: int = 3) -> list[str]:
 
 
 FONTS = Path(__file__).resolve().parent / "fonts"
-TEXT_FONTS = {   # dist name -> source (unmodified; Istok converted TTF -> WOFF2, Selawik as released)
+TEXT_FONTS = {   # dist name -> source (unmodified; Istok converted TTF -> WOFF2)
     "istok-web-regular.woff2": "IstokWeb-Regular.ttf", "istok-web-italic.woff2": "IstokWeb-Italic.ttf",
     "istok-web-bold.woff2": "IstokWeb-Bold.ttf", "istok-web-bold-italic.woff2": "IstokWeb-BoldItalic.ttf",
-    "selawik-light.woff2": "selawkl.woff2", "selawik-regular.woff2": "selawk.woff2",
-    "selawik-semibold.woff2": "selawksb.woff2", "selawik-bold.woff2": "selawkb.woff2",
 }
+
+
+def text_fonts(out: Path):
+    """Aerolith Text: Selawik (Microsoft, OFL) with a kern table and a new name, see kern.py. Rebuilt
+    when its source or kern.py is newer."""
+    import kern
+    newest = Path(kern.__file__).stat().st_mtime
+    for style, (src, _) in kern.WEIGHTS.items():
+        d = out / f"aerolith-text-{style}.woff2"
+        if not d.exists() or d.stat().st_mtime < max(newest, (FONTS / src).stat().st_mtime):
+            n = len(kern.make(style, d))
+            print(f"Aerolith Text {style}: {n} kern pairs", flush=True)
+    for old in out.glob("selawik-*.woff2"):        # the unmodified faces are no longer shipped
+        old.unlink()
+    (out / "OFL-Selawik.txt").unlink(missing_ok=True)
+    (out / "OFL-Aerolith-Text.txt").write_text(
+        "Aerolith Text is derived from Selawik by Microsoft Corporation. A kern table was added and the\n"
+        "font was renamed; it is a Modified Version under the SIL Open Font License 1.1 below and does not\n"
+        "use the Reserved Font Name \"Selawik\".\n\n"
+        "Copyright (c) 2026, Immineal (kern table).\n\n" + (FONTS / "OFL-Selawik.txt").read_text())
 
 
 def fonts(entries: dict):
@@ -346,8 +364,8 @@ def fonts(entries: dict):
             f.save(str(d))
         else:
             shutil.copyfile(FONTS / src, d)
+    text_fonts(out)
     shutil.copyfile(FONTS / "OFL-Istok.txt", out / "OFL-Istok-Web.txt")
-    shutil.copyfile(FONTS / "OFL-Selawik.txt", out / "OFL-Selawik.txt")
     (out / "OFL-Aerolith-Display.txt").write_text(
         "Aerolith Display is derived from Istok Web Bold by Andrey V. Panov. The outlines were made\n"
         "heavier and each glyph was rendered in Bryce; it is a Modified Version under the SIL Open\n"

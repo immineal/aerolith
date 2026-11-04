@@ -20,7 +20,7 @@
   --aer-target-gap: var(--aer-space-2);
 
   /* type: modular scale 1.2 */
-  --aer-font-ui: "Selawik", "Segoe UI", "Istok Web", "Frutiger", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
+  --aer-font-ui: "Aerolith Text", "Selawik", "Segoe UI", "Istok Web", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
   --aer-font-text: var(--aer-font-ui);
   --aer-font-mono: "Consolas", "Lucida Console", ui-monospace, monospace;
   --aer-text-xs: 0.833rem;
@@ -67,6 +67,13 @@
 /* 10-foot / distance media: scale everything so the visual angle stays comfortable at ~3 m */
 .aer-distance { font-size: 150%; --aer-control: var(--aer-control-l); }
 
+/* Chromium on Linux and Windows rounds every glyph advance to whole pixels unless asked for precise
+   geometry: a 16 px label came out 1.6 px wider with an open gap after the f in "verfügbar".
+   Scoped to our own controls; a host page keeps its own text-rendering. */
+:is(.aer-button, .aer-field, .aer-select, .aer-badge, .aer-segmented, .aer-menu, .aer-label, .aer-option,
+    .aer-choice, .aer-check, .aer-radio, .aer-toggle, .aer-panel, .aer-card, .aer-callout, .aer-dialog,
+    .aer-popover, .aer-toast) { text-rendering: geometricPrecision; }
+
 /* label text on glossy sprites: white + halo (WCAG measures text against its halo) */
 .aer-on-gloss {
   color: var(--aer-on-gloss);
@@ -88,7 +95,7 @@
 @media (forced-colors: active) {
   .aer [class*="aer-"] { border-color: ButtonText; }
   .aer-button, .aer-field, .aer-panel { border: 1px solid ButtonText !important; }
-  .aer-button:focus-visible { outline: 2px solid Highlight; }
+  .aer-button:focus-visible, .aer .aer-field:focus-visible, .aer-field:focus-visible { outline: 2px solid Highlight; }
 }
 
 /* utilities */

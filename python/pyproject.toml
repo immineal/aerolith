@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "aerolith"
-version = "1.1.0"
-description = "Frutiger Aero UI for the web: the Aerolith CSS and Bryce-rendered sprites as static files for Django, Flask, FastAPI and friends."
+version = "1.2.0"
+description = "Tactile UI for the web: the Aerolith CSS and Bryce-rendered sprites as static files for Django, Flask, FastAPI and friends."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.8"
 authors = [{ name = "Immineal" }]
-keywords = ["frutiger-aero", "css", "ui", "static-files", "django", "flask", "bryce"]
+keywords = ["tactile", "css", "ui", "static-files", "django", "flask", "bryce"]
 classifiers = [
   "Framework :: Django",
   "Framework :: Flask",

@@ -1,4 +1,4 @@
-"""Aerolith: Frutiger Aero UI rendered in Bryce 2, packaged as static files.
+"""Aerolith: tactile UI rendered in Bryce 2, packaged as static files.
 
 The CSS, the optional JS and the sprites live in ``aerolith/static/aerolith/``:
 
@@ -11,7 +11,7 @@ FastAPI / Starlette: ``app.mount("/aerolith", StaticFiles(directory=static_dir()
 """
 from pathlib import Path
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __all__ = ["static_dir", "css_path", "js_path", "__version__"]
 
 

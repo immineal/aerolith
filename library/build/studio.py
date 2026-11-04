@@ -108,16 +108,18 @@ class Studio:
         c.add("sphere", self.p(x + w - r, cy, z), (0, 0, 0), (h, h, d), mat)
 
     def slab(self, x, y, w, h, radius, bevel, thickness, mat, z=0.0, profile="ease", n=None,
-             heights=None, dish=0.0, well=None):
+             heights=None, dish=0.0, well=None, corner=2.0):
         """Single-surface rounded slab (symmetrical lattice), outline w x h CSS px with corner
         `radius`, edge rising over `bevel` px, total front-to-back `thickness`. Facing the camera.
         heights: optional custom 0..1 map (rows = y down) instead of the rounded rectangle.
         dish: sink the face into a smooth bowl, as a fraction of the half-thickness (pressed keys:
-        the face then catches the overhead light on its lower edge, the highlight flips)."""
+        the face then catches the overhead light on its lower edge, the highlight flips).
+        corner: superellipse exponent of the corners; 2 = circular, 4 = curvature that fades into the
+        straight sides (no kink in the reflections where corner meets edge)."""
         if n is None:
             n = lattice_n(w, h)
         if heights is None:
-            heights = rounded_rect_aniso(w, h, radius, bevel, n, profile, dish, well)
+            heights = rounded_rect_aniso(w, h, radius, bevel, n, profile, dish, well, corner)
         cx, cy = x + w / 2, y + h / 2
         self.c.heightfield(heights, offset=self.p(cx, cy, z), rotate=(-90, 0, 0),
                            size=(w, thickness / 2, h), material=mat)
@@ -141,7 +143,7 @@ def lattice_n(w, h, scale=RENDER_SCALE):
     return int(min(512, max(128, 32 * math.ceil(px / 32))))
 
 
-def rounded_rect_aniso(w, h, radius, bevel, n=512, profile="ease", dish=0.0, well=None):
+def rounded_rect_aniso(w, h, radius, bevel, n=512, profile="ease", dish=0.0, well=None, corner=2.0):
     """Height map (n x n, rows = y down) of a w x h CSS-px rounded rectangle: each grid cell is
     (w/n) x (h/n) px, so distances are computed in CSS px and the bevel stays uniform."""
     import numpy as np
@@ -153,7 +155,9 @@ def rounded_rect_aniso(w, h, radius, bevel, n=512, profile="ease", dish=0.0, wel
     hx, hy = w / 2 - pad * w / n, h / 2 - pad * h / n
     r = min(radius, hx, hy)
     qx, qy = np.abs(X) - (hx - r), np.abs(Y) - (hy - r)
-    outside = np.hypot(np.maximum(qx, 0), np.maximum(qy, 0)) + np.minimum(np.maximum(qx, qy), 0) - r
+    px_, py_ = np.maximum(qx, 0), np.maximum(qy, 0)
+    corner_d = np.hypot(px_, py_) if corner == 2.0 else (px_ ** corner + py_ ** corner) ** (1 / corner)
+    outside = corner_d + np.minimum(np.maximum(qx, qy), 0) - r
     d = np.clip(-outside, 0, None)
     hgt = shape_profile(np.clip(d / max(bevel, 1e-6), 0, 1), profile)
     if dish:

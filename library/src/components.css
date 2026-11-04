@@ -149,6 +149,8 @@
 .aer-field:focus {
   border-image: var(--aer-field-focus) var(--aer-field-focus-slice) / var(--aer-field-focus-border) / var(--aer-field-focus-outset) stretch;
 }
+/* the rendered aqua rim is the focus indicator: the square outline would cut across the rounded well */
+.aer .aer-field:focus-visible, .aer-field:focus-visible { outline: none; }
 textarea.aer-field { block-size: auto; min-block-size: calc(var(--aer-control) * 2); padding-block: var(--aer-space-3); resize: vertical; line-height: var(--aer-leading); }
 .aer-field:disabled, .aer-field[readonly] { color: var(--aer-ink-muted); }
 .aer-label { display: grid; gap: var(--aer-space-1); font: 600 var(--aer-text-s) / 1.3 var(--aer-font-ui); color: var(--aer-ink); }
@@ -324,6 +326,20 @@ a.aer-card:hover, button.aer-card:hover, .aer-card[data-interactive]:hover {
 }
 .aer-segmented > :has(:focus-visible) { outline: 2px solid var(--aer-focus); outline-offset: 2px; }
 .aer-segmented > :has(:disabled) { opacity: 0.5; cursor: not-allowed; }
+/* with aerolith.js: one pill carries the chip and slides; the items' own chips give way */
+.aer-segmented[data-aer-slide] { position: relative; isolation: isolate; }
+.aer-seg-pill {
+  position: absolute; left: 0; top: 0; z-index: -1; box-sizing: border-box; pointer-events: none;
+  border-style: solid; border-color: transparent; border-width: 0;
+  border-image: var(--aer-seg-chip) var(--aer-seg-chip-slice) / var(--aer-seg-chip-border) / var(--aer-seg-chip-outset) stretch;
+}
+.aer-segmented[data-aer-ready] > .aer-seg-pill {
+  transition: transform 300ms cubic-bezier(.3, 1.2, .5, 1), width 300ms cubic-bezier(.3, 1.2, .5, 1);
+}
+.aer-segmented[data-aer-slide] > :is(:has(:checked), [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-pressed="true"]) {
+  border-image: none;
+}
+.aer-segmented[data-aer-ready] > :not(.aer-seg-pill) { transition: color 200ms, text-shadow 200ms; }
 
 /* ------------------------------------------------------------------ choice card: a whole tile is the radio/checkbox
    <label class="aer-choice"><input type="radio" class="aer-radio" name="f"> <b>PDF</b> <small>…</small></label> */
@@ -521,14 +537,27 @@ a.aer-card:hover, button.aer-card:hover, .aer-card[data-interactive]:hover {
 }
 .aer-bar > .aer-spacer { flex: 1; }
 
-/* ------------------------------------------------------------------ lens: clear thick glass; in Chromium aerolith.js
-   adds the refraction of its rim (an SVG displacement map computed from the same bevel profile) */
+/* ------------------------------------------------------------------ lens: clear thick glass. aerolith.js adds the
+   refraction of its rim (an SVG displacement map computed from the same bevel profile): in Chromium, and in
+   Firefox when data-aer-lens-backdrop names the element behind it. Safari shows plain glass. */
 .aer-lens {
   position: relative; box-sizing: border-box; padding: var(--aer-space-5);
   border-style: solid; border-color: transparent; border-width: 0;
   border-image: var(--aer-lens) var(--aer-lens-slice) / var(--aer-lens-border) / var(--aer-lens-outset) stretch;
   color: var(--aer-ink);
 }
+/* with a backdrop copy: copy at the bottom, glass sprite over it, content on top */
+.aer-lens[data-aer-lens-view] { isolation: isolate; border-image: none; }
+.aer-lens[data-aer-lens-view]::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  border-style: solid; border-color: transparent; border-width: 0;
+  border-image: var(--aer-lens) var(--aer-lens-slice) / var(--aer-lens-border) / var(--aer-lens-outset) stretch;
+}
+.aer-lens-view { position: absolute; z-index: -2; overflow: hidden; pointer-events: none; }   /* placed by aerolith.js */
+/* the focus ring follows the glass, not a square box */
+.aer-lens[data-aer-drag] { border-radius: 24px; }
+.aer-lens[data-aer-drag] { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.aer-lens[data-aer-dragging] { cursor: grabbing; }
 
 /* ------------------------------------------------------------------ preferences */
 /* ------------------------------------------------------------------ state sprites, fetched up front
@@ -560,6 +589,7 @@ a.aer-card, button.aer-card, .aer-card[data-interactive], .aer-close {
   .aer-spinner::before { animation: none; }
   .aer-toggle::before, .aer-progress::-webkit-progress-value { transition: none; }
   .aer-toast, .aer-dialog[open] { animation: none; }
+  .aer-segmented[data-aer-ready] > .aer-seg-pill, .aer-segmented[data-aer-ready] > :not(.aer-seg-pill) { transition: none; }
 }
 /* forced colours: sprites are dropped, native rendering and system colours take over */
 @media (forced-colors: active) {
@@ -572,6 +602,7 @@ a.aer-card, button.aer-card, .aer-card[data-interactive], .aer-close {
     background: Highlight; color: HighlightText; forced-color-adjust: none;
   }
   .aer-toggle, .aer-check, .aer-radio { appearance: auto; border-image: none; }
-  .aer-toggle::before, .aer-spinner::before, .aer-callout::before { display: none; }
+  .aer-toggle::before, .aer-spinner::before, .aer-callout::before, .aer-seg-pill,
+  .aer-lens::before, .aer-lens-view { display: none; }
   .aer-spinner { border: 3px dotted CanvasText; border-radius: 50%; }
 }

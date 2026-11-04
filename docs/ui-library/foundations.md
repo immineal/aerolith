@@ -87,7 +87,7 @@ The base unit is 4 px (≈ 0.85 mm at laptop distance, ≈ 5 arcmin). The scale 
 
 Control heights come from the sprite sets: S = 32 px, M = 44 px (default) and L = 56 px. Each is rendered as its own geometry, not scaled, so highlight thickness and rim width stay physically right.
 
-Type: a system UI font stack with an era nod (Segoe UI → Frutiger-like fallbacks: "Segoe UI", "Myriad Pro", "Frutiger", Tahoma, system-ui). The base is 16 px with line-height 1.5, on a modular scale of 1.2 (13.3, 16, 19.2, 23, 27.6, 33.2).
+Type: the bundled Aerolith Text (Selawik with a kern table) with Segoe UI-like fallbacks ("Segoe UI", "Myriad Pro", Tahoma, system-ui). The base is 16 px with line-height 1.5, on a modular scale of 1.2 (13.3, 16, 19.2, 23, 27.6, 33.2).
 
 ## 5. Asset pipeline
 

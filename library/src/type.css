@@ -1,5 +1,6 @@
 /* Aerolith type.
-   Text: Selawik (default) or Istok Web (data-aer-type="istok"), both bundled, both SIL OFL 1.1.
+   Text: Aerolith Text (default; Selawik with a kern table, renamed because the OFL reserves "Selawik")
+   or Istok Web (data-aer-type="istok"), both bundled, both SIL OFL 1.1.
    Titles: Aerolith Display, gel letters rendered in Bryce and packed into colour fonts. Each
    material comes as OpenType-SVG (Firefox, Safari) and sbix (Chromium); tech() makes a browser
    download only the file it can draw. The fonts keep outlines, so a browser without colour-font
@@ -14,13 +15,13 @@
 @font-face { font-family: "Istok Web"; src: url(fonts/istok-web-bold-italic.woff2) format("woff2");
   font-weight: 700; font-style: italic; font-display: swap; }
 
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-light.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-light.woff2) format("woff2");
   font-weight: 300; font-display: swap; }
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-regular.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-regular.woff2) format("woff2");
   font-weight: 400; font-display: swap; }
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-semibold.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-semibold.woff2) format("woff2");
   font-weight: 600; font-display: swap; }
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-bold.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-bold.woff2) format("woff2");
   font-weight: 700; font-display: swap; }
 
 @font-face { font-family: "Aerolith Display Aqua"; font-display: swap;
@@ -37,7 +38,7 @@
        url(fonts/aerolith-display-pearl.bmp.woff2) format("woff2") tech(color-sbix); }
 
 [data-aer-type="istok"], .aer-type-istok {
-  --aer-font-ui: "Istok Web", "Selawik", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --aer-font-ui: "Istok Web", "Aerolith Text", "Segoe UI", Tahoma, system-ui, sans-serif;
 }
 
 /* Big titles only: the letters are rendered at about 80 px per em and read best from 32 px up.

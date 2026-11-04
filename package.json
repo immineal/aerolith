@@ -1,10 +1,10 @@
 {
   "name": "aerolith",
-  "version": "1.1.0",
-  "description": "Glossy buttons and real glass for the web, in the Frutiger Aero style. Every sprite rendered in Bryce 2 (1996) and laid over plain HTML.",
+  "version": "1.2.0",
+  "description": "Tactile UI for the web, rendered in Bryce 2 and laid over plain HTML.",
   "keywords": [
-    "frutiger-aero", "css", "ui", "ui-library", "design-system", "skeuomorphism", "glassmorphism",
-    "retro", "y2k", "aero", "bryce", "sprites", "dark-mode", "accessibility", "vanilla-css"
+    "tactile", "css", "ui", "ui-library", "design-system", "skeuomorphism", "glassmorphism",
+    "retro", "bryce", "sprites", "dark-mode", "accessibility", "vanilla-css"
   ],
   "homepage": "https://immineal.github.io/aerolith/",
   "bugs": "https://github.com/immineal/aerolith/issues",

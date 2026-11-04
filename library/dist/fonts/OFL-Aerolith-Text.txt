@@ -1,3 +1,9 @@
+Aerolith Text is derived from Selawik by Microsoft Corporation. A kern table was added and the
+font was renamed; it is a Modified Version under the SIL Open Font License 1.1 below and does not
+use the Reserved Font Name "Selawik".
+
+Copyright (c) 2026, Immineal (kern table).
+
 Copyright 2015, Microsoft Corporation (www.microsoft.com), with Reserved Font Name Selawik.  All Rights Reserved.  Selawik is a trademark of Microsoft Corporation in the United States and/or other countries.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.

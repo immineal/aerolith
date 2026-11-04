@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aerolith: Frutiger Aero UI, rendered in Bryce 2</title>
-<meta name="description" content="Frutiger Aero for the web. Glossy buttons and real glass, each one rendered in Bryce 2 and laid over plain HTML.">
+<title>Aerolith, a nostalgic tactile UI</title>
+<meta name="description" content="Tactile UI for the web, rendered in Bryce 2 and laid over plain HTML.">
 <meta property="og:title" content="Aerolith">
 <meta property="og:description" content="Glossy buttons and real glass for the web, each one rendered in Bryce 2.">
 <meta property="og:image" content="https://immineal.github.io/aerolith/assets/social.png">
@@ -30,7 +30,8 @@
     font: 600 14px/1.6 var(--aer-font-text); background: rgba(255, 255, 255, .7); color: #0d2236; }
   body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 100lvh; z-index: -1;
     background: var(--sky); pointer-events: none; }
-  body { margin: 0; min-height: 100vh; font: var(--aer-text-m)/var(--aer-leading) var(--aer-font-text); color: var(--aer-ink); }
+  body { margin: 0; min-height: 100vh; font: var(--aer-text-m)/var(--aer-leading) var(--aer-font-text); color: var(--aer-ink);
+    text-rendering: geometricPrecision; }
   .top { position: sticky; top: 8px; z-index: 10; max-width: 1040px; margin: 8px auto 0; padding: 0 16px; }
   /* the bar is glass: blur what scrolls under it so its own controls stay readable */
   .top .aer-bar { flex-wrap: wrap; border-radius: 14px; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
@@ -50,16 +51,15 @@
   }
   main { max-width: 1040px; margin: 0 auto; padding: var(--aer-space-6) 16px var(--aer-space-9); }
   .hero { display: grid; gap: var(--aer-space-4); padding: var(--aer-space-7) 0 var(--aer-space-6); }
-  .hero h1 { font-size: clamp(2.4rem, 6.4vw, 4.6rem); margin: 0 0 -0.1em; max-width: 19ch; }
-  .hero p { margin: 0; max-width: 60ch; font-size: var(--aer-text-l); color: var(--aer-ink-muted); }
+  .hero h1 { font-size: clamp(2.4rem, 6.4vw, 4.6rem); margin: 0 0 -0.1em; }
+  .hero h1 span { display: inline-block; }   /* breaks after the comma; a phone wraps inside */
   section { margin-block-start: var(--aer-space-8); }
   h2 { font: 700 var(--aer-text-xl)/1.2 var(--aer-font-ui); margin: 0 0 var(--aer-space-2); }
   h2.aer-display { font-size: 2.6rem; line-height: 1.1; margin-block-end: var(--aer-space-3); }
   .type-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--aer-space-4) var(--aer-space-6); }
   .type-row .aer-display { font-size: 4rem; margin: 0; }
-  .on-aqua.big, .on-sky { padding: 4px 28px 10px; border-radius: 22px; }
+  .on-aqua.big, .on-sky { padding: 13px 28px 1px; border-radius: 22px; }   /* no descenders: ink centred */
   .on-sky { display: inline-flex; background: linear-gradient(#1f6fc8, #5aa8ea 70%, #8fd0f6); }
-  .specimen p { max-width: 62ch; margin: 0 0 var(--aer-space-3); }
   .specimen .sizes { display: grid; gap: 4px; }
   h2 + p { margin: 0 0 var(--aer-space-4); color: var(--aer-ink-muted); max-width: 70ch; }
   h3 { font: 600 var(--aer-text-m)/1.3 var(--aer-font-ui); margin: var(--aer-space-5) 0 var(--aer-space-3); }
@@ -115,8 +115,7 @@
 
 <main>
   <div class="hero">
-    <h1 class="aer-display">Every button here was rendered in Bryce&nbsp;2</h1>
-    <p>Laid over plain HTML elements, so forms, keyboards and screen readers work as usual.</p>
+    <h1 class="aer-display"><span>Aerolith,</span> <span>a nostalgic tactile&nbsp;UI</span></h1>
     <div class="row">
       <a class="aer-button aer-l" href="https://github.com/immineal/aerolith#use-it">Get started</a>
       <a class="aer-button aer-quiet aer-l" href="https://github.com/immineal/aerolith#how-its-made">How it's made</a>
@@ -231,7 +230,6 @@
 
   <section id="surfaces" aria-labelledby="h-surfaces">
     <h2 class="aer-display" id="h-surfaces">Surfaces</h2>
-    <p>The lens bends what's behind its rim in Chrome and Edge only.</p>
     <div class="grid">
       <div class="stack">
         <div class="aer-panel" data-aer-menu="menu"><h3 style="margin-top:0">Panel</h3><p style="margin:0">Right-click or long-press here for a menu.</p></div>
@@ -247,15 +245,15 @@
           </div>
         </div>
       </div>
-      <div class="lens-stage">
-        <div class="behind" aria-hidden="true">AERO</div>
-        <div class="aer-lens">Clear glass lens</div>
+      <div class="lens-stage" id="lens-stage">
+        <div class="behind" aria-hidden="true">BRYCE</div>
+        <div class="aer-lens" data-aer-lens-backdrop="#lens-stage" data-aer-drag aria-label="Glass lens, movable with the arrow keys">Drag me</div>
       </div>
     </div>
     <h3>Before / after</h3>
     <div class="aer-compare" style="max-inline-size: 720px; border-radius: 14px">
-      <img src="assets/compare-light.jpg" alt="Buttons in light mode" width="1440" height="560">
-      <img src="assets/compare-dark.jpg" alt="Buttons in dark mode" width="1440" height="560">
+      <img src="assets/compare-light.jpg" alt="Buttons in light mode" width="1380" height="648">
+      <img src="assets/compare-dark.jpg" alt="Buttons in dark mode" width="1380" height="648">
       <input type="range" min="0" max="100" value="50" aria-label="Reveal dark mode">
     </div>
   </section>
@@ -305,7 +303,6 @@
 
   <section id="type" aria-labelledby="h-type">
     <h2 class="aer-display" id="h-type">Type</h2>
-    <p>Titles are real, selectable text in a colour font. Use it from 32&nbsp;px up.</p>
     <div class="type-row">
       <p class="aer-display aer-aqua">Aqua</p>
       <span class="on-sky"><span class="aer-display aer-glass" style="font-size: 4rem">Glass</span></span>
@@ -313,11 +310,10 @@
     </div>
     <h3>Text face</h3>
     <fieldset class="aer-segmented" aria-label="Text face" id="type-switch">
-      <label><input type="radio" name="face" value="selawik" checked> Selawik</label>
+      <label><input type="radio" name="face" value="selawik" checked> Aerolith Text</label>
       <label><input type="radio" name="face" value="istok"> Istok Web</label>
     </fieldset>
     <div class="specimen" style="margin-top: var(--aer-space-4)">
-      <p>Drag your photos here and they'll be ready in a moment. Nothing leaves your computer: the conversion runs right here in the browser, even when you're offline.</p>
       <div class="sizes">
         <span style="font-size: var(--aer-text-s)">Small print, 14&nbsp;px: Seite 3 von 12 · Größe 2,4&nbsp;MB</span>
         <span style="font-size: var(--aer-text-l); font-weight: 700">Bold, 19&nbsp;px: Quarterly report 2007</span>
@@ -327,8 +323,8 @@
   </section>
 
   <footer>
-    Aerolith, MIT licensed. Sprites rendered with Bryce 2 under Wine. Bryce is a trademark of its owner; this project is not affiliated.
-    <a href="https://github.com/immineal/aerolith">Source and docs on GitHub</a>.
+    MIT licensed. Bryce is a trademark of its owner; Aerolith is not affiliated.
+    <a href="https://github.com/immineal/aerolith">GitHub</a>
   </footer>
 </main>
 
@@ -356,14 +352,38 @@
     document.querySelector('.aer-toaster').append(t);
     setTimeout(() => t.remove(), 4000);
   };
-  // the section nav marks the section in view
+  // the section nav marks the last section whose top has passed under the bar. A clicked link stays
+  // marked until its scroll ends, so short sections and the last ones (which can't reach the top) work.
   const links = [...document.querySelectorAll('.top nav a')];
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    links.forEach(a => a.setAttribute('aria-current', a.hash === '#' + e.target.id ? 'true' : 'false'));
-  }), { rootMargin: '-40% 0px -55% 0px' });
-  document.querySelectorAll('main section').forEach(s => io.observe(s));
-  // text face switch: Selawik (default) or Istok Web, remembered
+  const sections = [...document.querySelectorAll('main section')];
+  let pinned = null, settle = 0, queued = false;
+  const mark = (id) => links.forEach(a => a.setAttribute('aria-current', a.hash === '#' + id ? 'true' : 'false'));
+  const spy = () => {
+    queued = false;
+    if (pinned) return;
+    // over the last screen of scrolling the line slides down to the window's bottom edge, so the last
+    // sections, which never reach the top, still take their turn
+    const base = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 40;
+    const left = document.documentElement.scrollHeight - innerHeight - scrollY;
+    const line = base + (innerHeight - 2 - base) * Math.max(0, 1 - left / innerHeight);
+    let cur = sections[0];
+    for (const sec of sections) if (sec.getBoundingClientRect().top <= line) cur = sec;
+    mark(cur.id);
+  };
+  addEventListener('scroll', () => {
+    if (pinned) { clearTimeout(settle); settle = setTimeout(() => { pinned = null; }, 200); }
+    else if (!queued) { queued = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+  addEventListener('resize', spy);
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    const sec = a && sections.find(s => '#' + s.id === a.hash);
+    if (!sec) return;
+    pinned = sec.id; mark(sec.id);
+    clearTimeout(settle); settle = setTimeout(() => { pinned = null; }, 600);   // no scroll at all: unpin anyway
+  });
+  spy();
+  // text face switch: Aerolith Text (default) or Istok Web, remembered
   const face = (v) => { if (v === 'istok') document.documentElement.dataset.aerType = v; else delete document.documentElement.dataset.aerType; };
   let saved = null;
   try { saved = localStorage.getItem('aerolith-type'); } catch (e) {}

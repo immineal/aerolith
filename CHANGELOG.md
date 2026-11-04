@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.2.0 (2026-11-04)
+
+- Segmented controls and tab bars: with aerolith.js the selected chip slides to the new item
+  instead of jumping. It follows radios, `aria-current`, `aria-selected` and `aria-pressed`; after
+  setting `input.checked` from script, call `Aerolith.init()` to move it. Reduced motion turns the
+  slide off; without the JS each item draws its own chip as before.
+- Fields show focus with their rendered aqua rim only. The square outline is gone; forced-colours
+  mode keeps a system outline.
+- Package descriptions and keywords say "tactile UI" and no longer name a design style.
+- Lens: `data-aer-lens-backdrop="<selector>"` bends the rim in Firefox too (the lens carries a copy
+  of that element and filters it). `data-aer-drag` makes a lens movable by pointer, touch or arrow
+  keys inside its parent. Safari still shows plain glass.
+- Lens glass re-rendered with one continuous curve over the rim and rounder (superellipse)
+  corners, so the edge has no crease. The refraction follows Snell's law over that curve and
+  splits red, green and blue slightly, giving colour fringes at the rim. The map takes about 6 ms
+  to build and scrolling or dragging stays at 60 fps.
+- Showcase: starts in light mode, shorter headline, before/after images on a bluer sky, a lens
+  you can drag, less text. The headline now reads "Aerolith, a nostalgic tactile UI".
+- Text spacing: Chromium on Linux and Windows rounded every glyph advance to a whole pixel, so
+  labels came out up to 1.7 px wider with uneven gaps (the hole after the f in "verfügbar").
+  Controls now set `text-rendering: geometricPrecision`, which lays text out exactly. The
+  before/after and hero images were shot again.
+- Aerolith Text replaces Selawik as the default text face: the same outlines with a kern table
+  (Selawik has none). It tightens open capital pairs (AT, Ta, LY, Fu), keeps r-f, t-v and
+  f-ï apart and leaves ordinary lowercase spacing as drawn. It is renamed because the OFL
+  reserves "Selawik". `dist/fonts/selawik-*.woff2` are gone; use `aerolith-text-*.woff2`.
+  `library/build/spacing_check.py` checks the layout in Chromium and Firefox.
+
 ## 1.1.0 (2026-11-04)
 
 - Aerolith Display: gel letters rendered in Bryce, one isolated render per glyph, packed into

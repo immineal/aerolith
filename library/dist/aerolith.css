@@ -21,7 +21,7 @@
   --aer-target-gap: var(--aer-space-2);
 
   /* type: modular scale 1.2 */
-  --aer-font-ui: "Selawik", "Segoe UI", "Istok Web", "Frutiger", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
+  --aer-font-ui: "Aerolith Text", "Selawik", "Segoe UI", "Istok Web", "Myriad Pro", Tahoma, system-ui, sans-serif;  /* bundled: type.css */
   --aer-font-text: var(--aer-font-ui);
   --aer-font-mono: "Consolas", "Lucida Console", ui-monospace, monospace;
   --aer-text-xs: 0.833rem;
@@ -68,6 +68,13 @@
 /* 10-foot / distance media: scale everything so the visual angle stays comfortable at ~3 m */
 .aer-distance { font-size: 150%; --aer-control: var(--aer-control-l); }
 
+/* Chromium on Linux and Windows rounds every glyph advance to whole pixels unless asked for precise
+   geometry: a 16 px label came out 1.6 px wider with an open gap after the f in "verfügbar".
+   Scoped to our own controls; a host page keeps its own text-rendering. */
+:is(.aer-button, .aer-field, .aer-select, .aer-badge, .aer-segmented, .aer-menu, .aer-label, .aer-option,
+    .aer-choice, .aer-check, .aer-radio, .aer-toggle, .aer-panel, .aer-card, .aer-callout, .aer-dialog,
+    .aer-popover, .aer-toast) { text-rendering: geometricPrecision; }
+
 /* label text on glossy sprites: white + halo (WCAG measures text against its halo) */
 .aer-on-gloss {
   color: var(--aer-on-gloss);
@@ -89,7 +96,7 @@
 @media (forced-colors: active) {
   .aer [class*="aer-"] { border-color: ButtonText; }
   .aer-button, .aer-field, .aer-panel { border: 1px solid ButtonText !important; }
-  .aer-button:focus-visible { outline: 2px solid Highlight; }
+  .aer-button:focus-visible, .aer .aer-field:focus-visible, .aer-field:focus-visible { outline: 2px solid Highlight; }
 }
 
 /* utilities */
@@ -100,7 +107,8 @@
 
 /* ---- type.css ---- */
 /* Aerolith type.
-   Text: Selawik (default) or Istok Web (data-aer-type="istok"), both bundled, both SIL OFL 1.1.
+   Text: Aerolith Text (default; Selawik with a kern table, renamed because the OFL reserves "Selawik")
+   or Istok Web (data-aer-type="istok"), both bundled, both SIL OFL 1.1.
    Titles: Aerolith Display, gel letters rendered in Bryce and packed into colour fonts. Each
    material comes as OpenType-SVG (Firefox, Safari) and sbix (Chromium); tech() makes a browser
    download only the file it can draw. The fonts keep outlines, so a browser without colour-font
@@ -115,13 +123,13 @@
 @font-face { font-family: "Istok Web"; src: url(fonts/istok-web-bold-italic.woff2) format("woff2");
   font-weight: 700; font-style: italic; font-display: swap; }
 
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-light.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-light.woff2) format("woff2");
   font-weight: 300; font-display: swap; }
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-regular.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-regular.woff2) format("woff2");
   font-weight: 400; font-display: swap; }
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-semibold.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-semibold.woff2) format("woff2");
   font-weight: 600; font-display: swap; }
-@font-face { font-family: "Selawik"; src: url(fonts/selawik-bold.woff2) format("woff2");
+@font-face { font-family: "Aerolith Text"; src: url(fonts/aerolith-text-bold.woff2) format("woff2");
   font-weight: 700; font-display: swap; }
 
 @font-face { font-family: "Aerolith Display Aqua"; font-display: swap;
@@ -138,7 +146,7 @@
        url(fonts/aerolith-display-pearl.bmp.woff2) format("woff2") tech(color-sbix); }
 
 [data-aer-type="istok"], .aer-type-istok {
-  --aer-font-ui: "Istok Web", "Selawik", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --aer-font-ui: "Istok Web", "Aerolith Text", "Segoe UI", Tahoma, system-ui, sans-serif;
 }
 
 /* Big titles only: the letters are rendered at about 80 px per em and read best from 32 px up.
@@ -1454,6 +1462,8 @@
 .aer-field:focus {
   border-image: var(--aer-field-focus) var(--aer-field-focus-slice) / var(--aer-field-focus-border) / var(--aer-field-focus-outset) stretch;
 }
+/* the rendered aqua rim is the focus indicator: the square outline would cut across the rounded well */
+.aer .aer-field:focus-visible, .aer-field:focus-visible { outline: none; }
 textarea.aer-field { block-size: auto; min-block-size: calc(var(--aer-control) * 2); padding-block: var(--aer-space-3); resize: vertical; line-height: var(--aer-leading); }
 .aer-field:disabled, .aer-field[readonly] { color: var(--aer-ink-muted); }
 .aer-label { display: grid; gap: var(--aer-space-1); font: 600 var(--aer-text-s) / 1.3 var(--aer-font-ui); color: var(--aer-ink); }
@@ -1629,6 +1639,20 @@ a.aer-card:hover, button.aer-card:hover, .aer-card[data-interactive]:hover {
 }
 .aer-segmented > :has(:focus-visible) { outline: 2px solid var(--aer-focus); outline-offset: 2px; }
 .aer-segmented > :has(:disabled) { opacity: 0.5; cursor: not-allowed; }
+/* with aerolith.js: one pill carries the chip and slides; the items' own chips give way */
+.aer-segmented[data-aer-slide] { position: relative; isolation: isolate; }
+.aer-seg-pill {
+  position: absolute; left: 0; top: 0; z-index: -1; box-sizing: border-box; pointer-events: none;
+  border-style: solid; border-color: transparent; border-width: 0;
+  border-image: var(--aer-seg-chip) var(--aer-seg-chip-slice) / var(--aer-seg-chip-border) / var(--aer-seg-chip-outset) stretch;
+}
+.aer-segmented[data-aer-ready] > .aer-seg-pill {
+  transition: transform 300ms cubic-bezier(.3, 1.2, .5, 1), width 300ms cubic-bezier(.3, 1.2, .5, 1);
+}
+.aer-segmented[data-aer-slide] > :is(:has(:checked), [aria-current]:not([aria-current="false"]), [aria-selected="true"], [aria-pressed="true"]) {
+  border-image: none;
+}
+.aer-segmented[data-aer-ready] > :not(.aer-seg-pill) { transition: color 200ms, text-shadow 200ms; }
 
 /* ------------------------------------------------------------------ choice card: a whole tile is the radio/checkbox
    <label class="aer-choice"><input type="radio" class="aer-radio" name="f"> <b>PDF</b> <small>…</small></label> */
@@ -1826,14 +1850,27 @@ a.aer-card:hover, button.aer-card:hover, .aer-card[data-interactive]:hover {
 }
 .aer-bar > .aer-spacer { flex: 1; }
 
-/* ------------------------------------------------------------------ lens: clear thick glass; in Chromium aerolith.js
-   adds the refraction of its rim (an SVG displacement map computed from the same bevel profile) */
+/* ------------------------------------------------------------------ lens: clear thick glass. aerolith.js adds the
+   refraction of its rim (an SVG displacement map computed from the same bevel profile): in Chromium, and in
+   Firefox when data-aer-lens-backdrop names the element behind it. Safari shows plain glass. */
 .aer-lens {
   position: relative; box-sizing: border-box; padding: var(--aer-space-5);
   border-style: solid; border-color: transparent; border-width: 0;
   border-image: var(--aer-lens) var(--aer-lens-slice) / var(--aer-lens-border) / var(--aer-lens-outset) stretch;
   color: var(--aer-ink);
 }
+/* with a backdrop copy: copy at the bottom, glass sprite over it, content on top */
+.aer-lens[data-aer-lens-view] { isolation: isolate; border-image: none; }
+.aer-lens[data-aer-lens-view]::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  border-style: solid; border-color: transparent; border-width: 0;
+  border-image: var(--aer-lens) var(--aer-lens-slice) / var(--aer-lens-border) / var(--aer-lens-outset) stretch;
+}
+.aer-lens-view { position: absolute; z-index: -2; overflow: hidden; pointer-events: none; }   /* placed by aerolith.js */
+/* the focus ring follows the glass, not a square box */
+.aer-lens[data-aer-drag] { border-radius: 24px; }
+.aer-lens[data-aer-drag] { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.aer-lens[data-aer-dragging] { cursor: grabbing; }
 
 /* ------------------------------------------------------------------ preferences */
 /* ------------------------------------------------------------------ state sprites, fetched up front
@@ -1865,6 +1902,7 @@ a.aer-card, button.aer-card, .aer-card[data-interactive], .aer-close {
   .aer-spinner::before { animation: none; }
   .aer-toggle::before, .aer-progress::-webkit-progress-value { transition: none; }
   .aer-toast, .aer-dialog[open] { animation: none; }
+  .aer-segmented[data-aer-ready] > .aer-seg-pill, .aer-segmented[data-aer-ready] > :not(.aer-seg-pill) { transition: none; }
 }
 /* forced colours: sprites are dropped, native rendering and system colours take over */
 @media (forced-colors: active) {
@@ -1877,6 +1915,7 @@ a.aer-card, button.aer-card, .aer-card[data-interactive], .aer-close {
     background: Highlight; color: HighlightText; forced-color-adjust: none;
   }
   .aer-toggle, .aer-check, .aer-radio { appearance: auto; border-image: none; }
-  .aer-toggle::before, .aer-spinner::before, .aer-callout::before { display: none; }
+  .aer-toggle::before, .aer-spinner::before, .aer-callout::before, .aer-seg-pill,
+  .aer-lens::before, .aer-lens-view { display: none; }
   .aer-spinner { border: 3px dotted CanvasText; border-radius: 50%; }
 }

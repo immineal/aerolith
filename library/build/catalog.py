@@ -245,6 +245,12 @@ def tiles():
         def draw(st, x, y):
             st.slab(x, y, w, h, r, bevel or (9 if not well else 6), thick, mat, well=well)
         return Item(name, w, h, draw, slice=sl or (r + 10,) * 4, glass=True, margin=10)
+    # clear lens: one continuous convex edge. Superellipse corners (n=4) and a quartic bevel 30 px wide;
+    # bevel < radius keeps the edge band out of the corners' diagonal seam. aerolith.js bends light
+    # through the same shape (LENS_R, LENS_BEVEL there).
+    lens = Item("lens", 160, 120, lambda st, x, y: st.slab(x, y, 160, 120, 32, 30, 20, M.CLEAR, profile="quartic",
+                                                          corner=4.0),
+                slice=(36,) * 4, glass=True, margin=10)
     return Sheet("tile", [tile("choice-on", M.CHOICE), tile("choice-on.dark", M.CHOICE_DARK),
                           tile("drop", M.TINT, 200, 120, 20, well=(0.35, 10), thick=16, sl=(32,) * 4),
                           tile("drop-over", dict(M.TINT_GREEN, ambience=0.3), 200, 120, 20, well=(0.35, 10),
@@ -252,7 +258,7 @@ def tiles():
                           tile("drop.dark", dict(M.CHOICE_DARK, ambience=0.22, transparency=0.55), 200, 120, 20,
                                well=(0.35, 10), thick=16, sl=(32,) * 4),
                           tile("drop-over.dark", M.DROP_DARK, 200, 120, 20, well=(0.35, 10), thick=16, sl=(32,) * 4),
-                          tile("lens", M.CLEAR, 160, 120, 24, thick=18, sl=(36,) * 4, bevel=14)])
+                          lens])
 
 
 def rails():

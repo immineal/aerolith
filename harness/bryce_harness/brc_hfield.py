@@ -207,7 +207,7 @@ def add_heightfield(sb: "brc.SceneBuilder", heights: np.ndarray, offset=(0, 0, 0
 
 
 # --------------------------------------------------------------------------- shape helpers
-PROFILES = ("ease", "pillow", "round", "linear")
+PROFILES = ("ease", "quartic", "pillow", "round", "linear")
 
 
 def shape_profile(t: np.ndarray, profile: str = "ease") -> np.ndarray:
@@ -216,9 +216,13 @@ def shape_profile(t: np.ndarray, profile: str = "ease") -> np.ndarray:
     pillow: cosine, zero slope at both ends: softest, dome-like.
     round:  quarter circle. Vertical at the outline, which Bryce's grid shows as ripples and
             jagged clip contours unless N is high and the bevel wide.
-    linear: chamfer."""
+    linear: chamfer.
+    quartic: 1-(1-t)^4, like ease but its curvature fades to zero at the inner end, so the edge runs
+            into the flat face with no visible shoulder (glass lens)."""
     if profile == "ease":
         return 1 - (1 - t) ** 3
+    if profile == "quartic":
+        return 1 - (1 - t) ** 4
     if profile == "pillow":
         return 0.5 - 0.5 * np.cos(np.pi * t)
     if profile == "round":

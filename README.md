@@ -1,6 +1,6 @@
 # Aerolith
 
-Frutiger Aero for the web. Every button, field, pane, icon and title letter is a Bryce 2 render
+Tactile UI for the web. Every button, field, pane, icon and title letter is a Bryce 2 render
 (1996), laid over plain HTML elements.
 
 **[Live showcase](https://immineal.github.io/aerolith/)** · [npm](https://www.npmjs.com/package/aerolith) · [Changelog](CHANGELOG.md)
@@ -39,7 +39,7 @@ example of every component. Self-hosting: keep `sprites/` and `fonts/` next to `
 | GitHub Packages | `npm i @immineal/aerolith --registry=https://npm.pkg.github.com` | same |
 | Composer | `composer require immineal/aerolith` | serve `vendor/immineal/aerolith/library/dist/` |
 | PyPI | `pip install aerolith` | `aerolith.static_dir()`; Django: add `"aerolith"` to `INSTALLED_APPS` |
-| CDN | jsDelivr, unpkg, esm.sh | or `cdn.jsdelivr.net/gh/immineal/aerolith@v1.1.0/library/dist/aerolith.css` |
+| CDN | jsDelivr, unpkg, esm.sh | or `cdn.jsdelivr.net/gh/immineal/aerolith@v1.2.0/library/dist/aerolith.css` |
 
 React, Vue, Svelte, Astro: import the CSS once in your entry file and use the classes
 (`className` in JSX). Content added after load needs `window.Aerolith.init(container)`.
@@ -55,7 +55,7 @@ React, Vue, Svelte, Astro: import the CSS once in your entry file and use the cl
 | `.aer-check`, `.aer-radio` | checkbox, radio | checked, mixed, disabled |
 | `.aer-field` | `<input>`, `<textarea>`, `<select>` | focus, disabled |
 | `.aer-select` | wrapper around `select.aer-field` | |
-| `.aer-segmented` | radios in labels, or links with `aria-current` | hover, selected |
+| `.aer-segmented` | radios in labels, or links with `aria-current` | hover, selected (slides with the JS) |
 | `.aer-choice` | `<label>` with a radio or checkbox | hover, checked, focus |
 | `.aer-drop` | `<label>` with `<input type="file">` | drag-over, focus |
 | `.aer-progress` | `<progress>` | value |
@@ -67,7 +67,7 @@ React, Vue, Svelte, Astro: import the CSS once in your entry file and use the cl
 | `.aer-dialog`, `.aer-close` | `<dialog>`, `<button>` | open, backdrop |
 | `.aer-popover`, `.aer-menu` | `[popover]` | item hover/focus |
 | `.aer-bar` | `<header>`, `<nav>` | |
-| `.aer-lens` | any block | rim refraction in Chromium |
+| `.aer-lens` | any block | rim refraction; `data-aer-drag` makes it movable |
 | `.aer-compare` | two `<img>` and an `<input type="range">` | |
 | `.aer-display` (+ `.aer-aqua`, `.aer-glass`, `.aer-pearl`) | any heading | 116 characters |
 
@@ -83,8 +83,8 @@ Aerolith Display is a colour font of rendered gel letters, so titles stay real, 
 Use it from 32 px up. Each material is about 0.6 MB, loaded only where used. Browsers without
 colour fonts show heavy Istok.
 
-Body text is **Selawik**, an open Segoe UI stand-in. `data-aer-type="istok"` switches to
-**Istok Web**. Dark mode follows the system; `data-theme="dark"` or `"light"` on `<html>` forces it,
+Body text is **Aerolith Text**, Selawik (an open Segoe UI stand-in) with a kern table, because Selawik
+ships without kerning. `data-aer-type="istok"` switches to **Istok Web**. Dark mode follows the system; `data-theme="dark"` or `"light"` on `<html>` forces it,
 and the sun/moon switch (`input[data-aer-theme]`) sets that for you.
 
 ## Accessibility
@@ -130,7 +130,8 @@ Setup: [harness/README.md](harness/README.md). Design rules:
 
 - **No colour picker.** Colours are baked into the renders.
 - **Three heights.** 32, 44 or 56 px; buttons stretch sideways only.
-- **The lens bends light only in Chromium.** Firefox and Safari show plain glass.
+- **The lens bends light in Chromium, and in Firefox with `data-aer-lens-backdrop="#el"`** (the
+  element behind it). Safari shows plain glass.
 - **No framework components.** Put the classes on your own elements.
 - **Bitmap icons and titles.** Icons are 16 and 24 px. Titles are sharp up to about 120 px and
   cover Latin with German and French accents.
@@ -138,6 +139,7 @@ Setup: [harness/README.md](harness/README.md). Design rules:
 ## License
 
 MIT for code and sprites ([LICENSE](LICENSE)). Fonts in `library/dist/fonts/` are SIL OFL 1.1:
-Istok Web (Andrey V. Panov) and Selawik (Microsoft) unmodified, Aerolith Display derived from
+Istok Web (Andrey V. Panov) unmodified; Aerolith Text, derived from Selawik (Microsoft) with a kern
+table added and renamed because the OFL reserves "Selawik"; Aerolith Display, derived from
 Istok Web Bold. Bryce is a trademark of its owner; Aerolith is not affiliated and contains no
 Bryce code.
