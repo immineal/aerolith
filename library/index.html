@@ -12,11 +12,14 @@
 <link rel="icon" href="dist/sprites/orb-info@3x.png">
 <link rel="stylesheet" href="dist/aerolith.css">
 <style>
-  html { scroll-padding-top: 88px; background: #eaf6fb linear-gradient(#5fb4f2 0, #bfe5fb 560px, #e6f5fc 900px, #eaf6fb) no-repeat; }
-  :root[data-theme="dark"] { background: #0f1c26 linear-gradient(#0a1422, #16263a 700px, #0f1c26 1400px) no-repeat; }
+  /* The sky stays put while the page scrolls: a fixed layer, since iOS ignores background-attachment: fixed */
+  html { scroll-padding-top: 88px; background: #eaf6fb; --sky: linear-gradient(#5fb4f2, #bfe5fb 60%, #e6f5fc); }
+  :root[data-theme="dark"] { background: #0f1c26; --sky: linear-gradient(#0a1422, #16263a 50%, #0f1c26); }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { background: #0f1c26 linear-gradient(#0a1422, #16263a 700px, #0f1c26 1400px) no-repeat; }
+    :root:not([data-theme="light"]) { background: #0f1c26; --sky: linear-gradient(#0a1422, #16263a 50%, #0f1c26); }
   }
+  body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 100lvh; z-index: -1;
+    background: var(--sky); pointer-events: none; }
   body { margin: 0; min-height: 100vh; font: var(--aer-text-m)/var(--aer-leading) var(--aer-font-text); color: var(--aer-ink); }
   .top { position: sticky; top: 8px; z-index: 10; max-width: 1040px; margin: 8px auto 0; padding: 0 16px; }
   .top .aer-bar { flex-wrap: wrap; }
