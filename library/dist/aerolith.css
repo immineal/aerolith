@@ -1448,8 +1448,13 @@
 .aer-field:focus {
   border-image: var(--aer-field-focus) var(--aer-field-focus-slice) / var(--aer-field-focus-border) / var(--aer-field-focus-outset) stretch;
 }
-/* the rendered aqua rim is the focus indicator: the square outline would cut across the rounded well */
-.aer .aer-field:focus-visible, .aer-field:focus-visible { outline: none; }
+/* focus: the rendered aqua rim plus a soft halo that follows the rounded well (a square outline
+   would cut across it) */
+.aer .aer-field:focus-visible, .aer-field:focus-visible {
+  outline: none; border-radius: 11px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--aer-focus) 45%, transparent),
+              0 0 12px 2px color-mix(in srgb, var(--aer-focus-glow) 80%, transparent);
+}
 textarea.aer-field { block-size: auto; min-block-size: calc(var(--aer-control) * 2); padding-block: var(--aer-space-3); resize: vertical; line-height: var(--aer-leading); }
 .aer-field:disabled, .aer-field[readonly] { color: var(--aer-ink-muted); }
 .aer-label { display: grid; gap: var(--aer-space-1); font: 600 var(--aer-text-s) / 1.3 var(--aer-font-ui); color: var(--aer-ink); }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 (2026-11-04)
+
+- Fields: a soft rounded halo around the aqua rim marks focus, so it shows in light mode too.
+
 ## 1.3.1 (2026-11-04)
 
 - npm releases come straight from GitHub Actions through trusted publishing, with provenance
