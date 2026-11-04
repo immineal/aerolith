@@ -280,6 +280,15 @@ def windows():
                            orb("compare-grip", 36, M.PEARL, 6)])]
 
 
+def brand():
+    """The logo mark: an "air stone", a flattened aqua pebble tilted a little, 36 px."""
+    def pebble(name, mat, glass=False):
+        def draw(st, x, y):
+            st.c.add("sphere", st.p(x + 18, y + 18, 0), (0, 0, -18), (34, 24, 20), mat)
+        return Item(name, 36, 36, draw, glass=glass, margin=6, hit=(36, 36))
+    return Sheet("logo", [pebble("logo-aqua", M.AQUA), pebble("logo-liquid", M.LIQUID_AQUA)])
+
+
 SPIN_FRAMES = 8
 
 
@@ -324,4 +333,4 @@ def sheets():
     return [s.layout() for s in (buttons("s"), buttons("m"), buttons("l"), glass_buttons("s"), glass_buttons("m"),
                                        glass_buttons("l"), toggles(), checks(),
                                        fields(), panels(), tubes(), gems(), icons(),
-                                       icon_buttons(), segmented(), tiles(), rails(), *windows(), spinner(), display())]
+                                       icon_buttons(), segmented(), tiles(), rails(), *windows(), spinner(), brand(), display())]

@@ -7,10 +7,19 @@
   on dark pages) and pearl. Use `.aer-display` on headings; on dark pages it uses the glass face
   unless you add `.aer-aqua`. Outlines are matted to the exact font outline, so they stay smooth
   instead of following Bryce's heightfield grid.
-- Bundled text faces: Istok Web (default) and Selawik (`data-aer-type="selawik"`). Before, the
+- Bundled text faces: Selawik (default) and Istok Web (`data-aer-type="istok"`). Before, the
   stack asked for Segoe UI and fell back to whatever the system had.
 - `.aer-glow` text halo.
-- Showcase: titles in Aerolith Display, a Type section with a text-face switch.
+- Hover, pressed and checked sprites load with the page (zero-size backgrounds), and aerolith.js
+  preloads the sprites of closed dialogs and popovers. A first tap no longer shows an empty
+  control for a moment.
+- Menus: a popover opens below its button (above when there is no room) instead of in the
+  window's corner; `data-aer-menu="id"` opens one at the pointer on right-click or long-press;
+  picking an item closes it. Popovers and toasts blur what is behind them, so text under
+  them no longer shows through.
+- Phones: toasts sit centred; the dialog backdrop blurs in Safari too.
+- Showcase: titles in Aerolith Display, a text-face switch, a sky that follows the visitor's
+  local time, a section menu on narrow screens.
 
 ## 1.0.0 (2026-11-03)
 

@@ -146,6 +146,7 @@ def skins_css() -> str:
         for z, zc in sizes.items():
             base = f".aer-button{cc}{zc}"
             rule(base, f"btn-{c}-{z}")
+            out[-1] = out[-1][:-1] + f"--_pre: var(--aer-btn-{c}-{z}-hover), var(--aer-btn-{c}-{z}-active); }}"
             rule(f"{base}:hover", f"btn-{c}-{z}-hover")
             rule(f"{base}:active, {base}[aria-pressed=\"true\"]", f"btn-{c}-{z}-active")
     for c, cc in colours.items():

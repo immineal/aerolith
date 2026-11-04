@@ -4403,6 +4403,94 @@
    37
   ]
  },
+ "logo-aqua": {
+  "name": "logo-aqua",
+  "box": [
+   60,
+   60,
+   276,
+   276
+  ],
+  "slice": null,
+  "shape": [
+   60,
+   60,
+   276,
+   276
+  ],
+  "label": null,
+  "text": null,
+  "hit": [
+   36,
+   36
+  ],
+  "meta": {
+   "sheet": "logo-aqua"
+  },
+  "size": [
+   36,
+   36
+  ],
+  "files": {
+   "1": "sprites/logo-aqua@1x.png",
+   "2": "sprites/logo-aqua@2x.png",
+   "3": "sprites/logo-aqua@3x.png"
+  },
+  "outset": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "shape_size": [
+   36,
+   36
+  ]
+ },
+ "logo-liquid": {
+  "name": "logo-liquid",
+  "box": [
+   60,
+   60,
+   276,
+   276
+  ],
+  "slice": null,
+  "shape": [
+   60,
+   60,
+   276,
+   276
+  ],
+  "label": null,
+  "text": null,
+  "hit": [
+   36,
+   36
+  ],
+  "meta": {
+   "sheet": "logo-liquid"
+  },
+  "size": [
+   36,
+   36
+  ],
+  "files": {
+   "1": "sprites/logo-liquid@1x.png",
+   "2": "sprites/logo-liquid@2x.png",
+   "3": "sprites/logo-liquid@3x.png"
+  },
+  "outset": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "shape_size": [
+   36,
+   36
+  ]
+ },
  "orb-error": {
   "name": "orb-error",
   "box": [

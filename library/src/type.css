@@ -1,5 +1,5 @@
 /* Aerolith type.
-   Text: Istok Web (default) or Selawik (data-aer-type="selawik"), both bundled, both SIL OFL 1.1.
+   Text: Selawik (default) or Istok Web (data-aer-type="istok"), both bundled, both SIL OFL 1.1.
    Titles: Aerolith Display, gel letters rendered in Bryce and packed into colour fonts. Each
    material comes as OpenType-SVG (Firefox, Safari) and sbix (Chromium); tech() makes a browser
    download only the file it can draw. The fonts keep outlines, so a browser without colour-font
@@ -36,12 +36,12 @@
   src: url(fonts/aerolith-display-pearl.svg.woff2) format("woff2") tech(color-SVG),
        url(fonts/aerolith-display-pearl.bmp.woff2) format("woff2") tech(color-sbix); }
 
-[data-aer-type="selawik"], .aer-type-selawik {
-  --aer-font-ui: "Selawik", "Segoe UI", "Istok Web", Tahoma, system-ui, sans-serif;
+[data-aer-type="istok"], .aer-type-istok {
+  --aer-font-ui: "Istok Web", "Selawik", "Segoe UI", Tahoma, system-ui, sans-serif;
 }
 
 /* Big titles only: the letters are rendered at about 80 px per em and read best from 32 px up.
-   Weight 700 picks heavy Istok while the font loads; the colour face itself has one weight and is
+   Weight 700 picks the bold text face while the font loads; the colour face itself has one weight and is
    never synthesised. */
 .aer-display {
   --_face: "Aerolith Display Aqua";

@@ -83,8 +83,8 @@ Aerolith Display is a colour font of rendered gel letters, so titles stay real, 
 Use it from 32 px up. Each material is about 0.6 MB, loaded only where used. Browsers without
 colour fonts show heavy Istok.
 
-Body text is **Istok Web**. `data-aer-type="selawik"` switches to **Selawik**, an open Segoe UI
-stand-in. Dark mode follows the system; `data-theme="dark"` or `"light"` on `<html>` forces it,
+Body text is **Selawik**, an open Segoe UI stand-in. `data-aer-type="istok"` switches to
+**Istok Web**. Dark mode follows the system; `data-theme="dark"` or `"light"` on `<html>` forces it,
 and the sun/moon switch (`input[data-aer-theme]`) sets that for you.
 
 ## Accessibility

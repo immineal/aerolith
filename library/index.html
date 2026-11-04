@@ -13,17 +13,41 @@
 <link rel="stylesheet" href="dist/aerolith.css">
 <style>
   /* The sky stays put while the page scrolls: a fixed layer, since iOS ignores background-attachment: fixed */
-  html { scroll-padding-top: 88px; background: #eaf6fb; --sky: linear-gradient(#5fb4f2, #bfe5fb 60%, #e6f5fc); }
-  :root[data-theme="dark"] { background: #0f1c26; --sky: linear-gradient(#0a1422, #16263a 50%, #0f1c26); }
+  /* The sky follows the visitor's local time (the script at the end sets --sky-*, --glow-*);
+     these are the noon fallbacks without JS */
+  html { scroll-padding-top: 88px; background: #eaf6fb;
+    --sky: radial-gradient(ellipse 80% 32% at var(--glow-l-x, 50%) 100%, var(--glow-l, transparent), transparent 70%),
+      linear-gradient(var(--sky-l0, #77c1f7), var(--sky-l1, #9fd3f9) 42%, var(--sky-l2, #bfe5fb) 68%, var(--sky-l3, #d6eefc) 87%, var(--sky-l4, #e6f5fc)); }
+  :root[data-theme="dark"] { background: #0f1c26;
+    --sky: radial-gradient(ellipse 80% 32% at var(--glow-d-x, 50%) 100%, var(--glow-d, transparent), transparent 70%),
+      linear-gradient(var(--sky-d0, #0a1830), var(--sky-d1, #10243f) 42%, var(--sky-d2, #16304e) 68%, var(--sky-d3, #183452) 87%, var(--sky-d4, #1a3856)); }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { background: #0f1c26; --sky: linear-gradient(#0a1422, #16263a 50%, #0f1c26); }
+    :root:not([data-theme="light"]) { background: #0f1c26;
+      --sky: radial-gradient(ellipse 80% 32% at var(--glow-d-x, 50%) 100%, var(--glow-d, transparent), transparent 70%),
+      linear-gradient(var(--sky-d0, #0a1830), var(--sky-d1, #10243f) 42%, var(--sky-d2, #16304e) 68%, var(--sky-d3, #183452) 87%, var(--sky-d4, #1a3856)); }
   }
+  .sky-clock { position: fixed; left: 12px; bottom: 12px; z-index: 20; padding: 2px 10px; border-radius: 999px;
+    font: 600 14px/1.6 var(--aer-font-text); background: rgba(255, 255, 255, .7); color: #0d2236; }
   body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 100lvh; z-index: -1;
     background: var(--sky); pointer-events: none; }
   body { margin: 0; min-height: 100vh; font: var(--aer-text-m)/var(--aer-leading) var(--aer-font-text); color: var(--aer-ink); }
   .top { position: sticky; top: 8px; z-index: 10; max-width: 1040px; margin: 8px auto 0; padding: 0 16px; }
-  .top .aer-bar { flex-wrap: wrap; }
-  .brand { display: flex; align-items: center; gap: 10px; font-size: var(--aer-text-l); }
+  /* the bar is glass: blur what scrolls under it so its own controls stay readable */
+  .top .aer-bar { flex-wrap: wrap; border-radius: 14px; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .brand { display: flex; align-items: center; gap: 6px; text-decoration: none; }
+  .brand .mark { inline-size: 36px; block-size: 36px; flex: none; --_img: var(--aer-logo-liquid); --_out: var(--aer-logo-liquid-outset); }
+  .brand .aer-display { font-size: 32px; line-height: 1; }
+  .nav-btn { display: none; }
+  @media (max-width: 860px) {           /* phones and narrow windows: the sections move into a menu */
+    .top nav.aer-segmented { display: none; }
+    .nav-btn { display: inline-grid; }
+    .top .aer-bar { flex-wrap: nowrap; gap: var(--aer-space-3); padding-inline: var(--aer-space-4); }
+  }
+  @media (max-width: 420px) {
+    .top { padding-inline: 8px; }
+    .top .aer-bar { gap: var(--aer-space-2); padding-inline: var(--aer-space-3); }
+    .brand .aer-display { font-size: 28px; }
+  }
   main { max-width: 1040px; margin: 0 auto; padding: var(--aer-space-6) 16px var(--aer-space-9); }
   .hero { display: grid; gap: var(--aer-space-4); padding: var(--aer-space-7) 0 var(--aer-space-6); }
   .hero h1 { font-size: clamp(2.4rem, 6.4vw, 4.6rem); margin: 0 0 -0.1em; max-width: 19ch; }
@@ -67,7 +91,7 @@
 <body class="aer">
 <div class="top">
   <header class="aer-bar">
-    <span class="brand"><span class="aer-icon aer-icon-colour" aria-hidden="true"></span> Aerolith</span>
+    <a class="brand" href="#top" aria-label="Aerolith, back to top"><span class="mark aer-sprite" aria-hidden="true"></span><span class="aer-display" aria-hidden="true">Aerolith</span></a>
     <nav class="aer-segmented" aria-label="Sections">
       <a href="#buttons" aria-current="true">Buttons</a>
       <a href="#inputs">Inputs</a>
@@ -79,7 +103,14 @@
     <span class="aer-spacer"></span>
     <label class="aer-option"><input type="checkbox" role="switch" class="aer-toggle aer-theme" data-aer-theme aria-label="Dark mode"></label>
     <a class="aer-iconbtn aer-quiet" href="https://github.com/immineal/aerolith" aria-label="Source on GitHub"><span class="aer-icon aer-icon-code" aria-hidden="true"></span></a>
+    <button class="aer-iconbtn aer-quiet nav-btn" popovertarget="nav-menu" aria-label="Sections"><span class="aer-icon aer-icon-menu" aria-hidden="true"></span></button>
   </header>
+  <div class="aer-popover" popover id="nav-menu">
+    <nav class="aer-menu" aria-label="Sections">
+      <a href="#buttons">Buttons</a><a href="#inputs">Inputs</a><a href="#feedback">Feedback</a>
+      <a href="#surfaces">Surfaces</a><a href="#icons">Icons</a><a href="#type">Type</a>
+    </nav>
+  </div>
 </div>
 
 <main>
@@ -206,7 +237,7 @@
     <p>Frosted on light pages, smoked on dark ones. In Chrome and Edge the lens bends what's behind its rim.</p>
     <div class="grid">
       <div class="stack">
-        <div class="aer-panel"><h3 style="margin-top:0">Panel</h3><p style="margin:0">Big frosted pane for grouping a tool's settings.</p></div>
+        <div class="aer-panel" data-aer-menu="menu"><h3 style="margin-top:0">Panel</h3><p style="margin:0">Big frosted pane for grouping a tool's settings. Right-click or long-press it for a menu.</p></div>
         <div class="row">
           <button class="aer-button" id="dialog-btn">Open dialog</button>
           <button class="aer-button aer-quiet" popovertarget="menu" id="menu-btn"><span class="aer-icon aer-icon-menu" aria-hidden="true"></span> Menu</button>
@@ -278,7 +309,7 @@
 
   <section id="type" aria-labelledby="h-type">
     <h2 class="aer-display" id="h-type">Type</h2>
-    <p>Titles use Aerolith Display, a colour font of rendered letters, from 32&nbsp;px up. Body text uses Istok Web or Selawik.</p>
+    <p>Titles use Aerolith Display, a colour font of rendered letters, from 32&nbsp;px up. Body text uses Selawik or Istok Web.</p>
     <div class="type-row">
       <p class="aer-display aer-aqua">Aqua</p>
       <span class="on-sky"><span class="aer-display aer-glass" style="font-size: 4rem">Glass</span></span>
@@ -286,8 +317,8 @@
     </div>
     <h3>Text face</h3>
     <fieldset class="aer-segmented" aria-label="Text face" id="type-switch">
-      <label><input type="radio" name="face" value="istok" checked> Istok Web</label>
-      <label><input type="radio" name="face" value="selawik"> Selawik</label>
+      <label><input type="radio" name="face" value="selawik" checked> Selawik</label>
+      <label><input type="radio" name="face" value="istok"> Istok Web</label>
     </fieldset>
     <div class="specimen" style="margin-top: var(--aer-space-4)">
       <p>Drag your photos here and they'll be ready in a moment. Nothing leaves your computer: the conversion runs right here in the browser, even when you're offline.</p>
@@ -336,8 +367,8 @@
     links.forEach(a => a.setAttribute('aria-current', a.hash === '#' + e.target.id ? 'true' : 'false'));
   }), { rootMargin: '-40% 0px -55% 0px' });
   document.querySelectorAll('main section').forEach(s => io.observe(s));
-  // text face switch: Istok Web (default) or Selawik, remembered
-  const face = (v) => { if (v === 'selawik') document.documentElement.dataset.aerType = v; else delete document.documentElement.dataset.aerType; };
+  // text face switch: Selawik (default) or Istok Web, remembered
+  const face = (v) => { if (v === 'istok') document.documentElement.dataset.aerType = v; else delete document.documentElement.dataset.aerType; };
   let saved = null;
   try { saved = localStorage.getItem('aerolith-type'); } catch (e) {}
   if (saved) { face(saved); const r = document.querySelector(`#type-switch input[value="${saved}"]`); if (r) r.checked = true; }
@@ -345,6 +376,109 @@
     face(e.target.value);
     try { localStorage.setItem('aerolith-type', e.target.value); } catch (err) {}
   });
+</script>
+<script type="application/json" id="sky-keys">
+{
+  "at": [0, 42, 68, 87, 100],
+  "glow": [80, 32],
+  "light": [
+    [0.0, ["#a9c0dc", "#bccde3", "#cfdcec", "#dbe4f0", "#e6edf6"], [50, "#ffffff", 0]],
+    [4.5, ["#a9c0dc", "#bccde3", "#cfdcec", "#dbe4f0", "#e6edf6"], [22, "#ffffff", 0]],
+    [5.75, ["#a6c0e4", "#c3cde6", "#ddd3e6", "#f0d3d8", "#f8e0d8"], [22, "#ffeee4", 0.35]],
+    [6.75, ["#90c2ee", "#cfd8f0", "#f7cfd6", "#ffd3b8", "#fff0de"], [22, "#fff6e6", 0.8]],
+    [8.5, ["#7fc0f0", "#a6d4f6", "#c9e6fb", "#def1fc", "#eef8fd"], [30, "#ffffff", 0.25]],
+    [12.0, ["#77c1f7", "#9fd3f9", "#bfe5fb", "#d6eefc", "#e6f5fc"], [50, "#ffffff", 0]],
+    [16.0, ["#7ebff5", "#a5d2f7", "#c6e3f7", "#dcecf5", "#eef4f2"], [70, "#fff8ee", 0.2]],
+    [18.25, ["#8cc0ec", "#bcd8f0", "#f6d6c6", "#ffd2aa", "#fff0d6"], [76, "#fff4e0", 0.7]],
+    [19.5, ["#a0c4ea", "#e2c6dc", "#fbbfb4", "#ffcfa6", "#fff0dc"], [78, "#fff2e4", 0.85]],
+    [20.75, ["#a6c0e2", "#bec5e2", "#d8cadf", "#edcdd2", "#f6ddd6"], [78, "#ffeee8", 0.3]],
+    [22.0, ["#a9c0dc", "#bccde3", "#cfdcec", "#dbe4f0", "#e6edf6"], [78, "#ffffff", 0]],
+    [24.0, ["#a9c0dc", "#bccde3", "#cfdcec", "#dbe4f0", "#e6edf6"], [50, "#ffffff", 0]]
+  ],
+  "dark": [
+    [0.0, ["#050b18", "#08101f", "#0b1628", "#0e1a2d", "#101d30"], [50, "#000000", 0]],
+    [4.5, ["#050b18", "#08101f", "#0b1628", "#0e1a2d", "#101d30"], [22, "#000000", 0]],
+    [5.75, ["#070f22", "#0e1730", "#19203a", "#2a2438", "#382a36"], [22, "#ff9a6a", 0.08]],
+    [6.75, ["#0a1730", "#1a2444", "#352a44", "#55303a", "#6a3a2c"], [22, "#ffa060", 0.15]],
+    [8.5, ["#0a1a30", "#10223a", "#142a44", "#172e47", "#1a3249"], [30, "#000000", 0]],
+    [12.0, ["#0a1830", "#10243f", "#16304e", "#183452", "#1a3856"], [50, "#000000", 0]],
+    [16.0, ["#0a1a30", "#11253d", "#182f48", "#1c3249", "#20344a"], [70, "#000000", 0]],
+    [18.25, ["#0c1a33", "#1a2a44", "#33303e", "#553a30", "#664228"], [76, "#ffa858", 0.14]],
+    [19.5, ["#0a1430", "#1d2040", "#3a2640", "#622f36", "#6e3a28"], [78, "#ff9050", 0.16]],
+    [20.75, ["#070f22", "#101a32", "#1c1d36", "#2c2236", "#33263a"], [78, "#ff8a60", 0.06]],
+    [22.0, ["#050b18", "#08101f", "#0b1628", "#0e1a2d", "#101d30"], [78, "#000000", 0]],
+    [24.0, ["#050b18", "#08101f", "#0b1628", "#0e1a2d", "#101d30"], [50, "#000000", 0]]
+  ]
+}
+</script>
+<script>
+  /* Time-of-day sky. Keyframes: [hour, [colours at the "at" stops], [glow x %, glow colour, glow alpha]],
+     light and dark sets: night, pre-dawn,
+     sunrise, morning, noon, afternoon, golden hour, sunset, dusk. Neighbouring keyframes blend in OKLab
+     with an ease. The bottom edge of the screen is the horizon. Every 5-minute step was checked against the
+     page text at every height and across the glow (APCA: ink Lc 60+, muted Lc 45+) and the colour rules. Preview: ?sky=18:30, or ?sky=cycle (a day in 48 s). */
+  (() => {
+    const K = JSON.parse(document.getElementById('sky-keys').textContent);
+    const lin = c => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    const gam = c => c <= 0.0031308 ? 12.92 * c : 1.055 * Math.max(c, 0) ** (1 / 2.4) - 0.055;
+    const ok = hex => {
+      const [r, g, b] = [1, 3, 5].map(i => lin(parseInt(hex.slice(i, i + 2), 16) / 255));
+      const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+      const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+      const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+      return [0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+              1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+              0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s];
+    };
+    const rgb = ([L, A, B]) => {
+      const l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3;
+      const m = (L - 0.1055613458 * A - 0.0638541728 * B) ** 3;
+      const s = (L - 0.0894841775 * A - 1.2914855480 * B) ** 3;
+      const c = [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+                 -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+                 -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s];
+      return 'rgb(' + c.map(v => Math.round(255 * Math.min(1, Math.max(0, gam(v))))).join(' ') + ')';
+    };
+    const root = document.documentElement.style;
+    const mix = (x, y, f) => { const p0 = ok(x), p1 = ok(y); return p0.map((v, k) => v * (1 - f) + p1[k] * f); };
+    const paint = hour => {
+      for (const [set, p] of [['light', 'l'], ['dark', 'd']]) {
+        const keys = K[set];
+        let i = 0;
+        while (i < keys.length - 2 && hour > keys[i + 1][0]) i++;
+        const [t0, a, ga] = keys[i], [t1, b, gb] = keys[i + 1];
+        let f = t1 > t0 ? Math.min(1, Math.max(0, (hour - t0) / (t1 - t0))) : 0;
+        f = f * f * (3 - 2 * f);
+        a.forEach((x, j) => root.setProperty('--sky-' + p + j, rgb(mix(x, b[j], f))));
+        // the sun sits just below the bottom edge of the screen (the horizon); its glow fades to nothing
+        const alpha = ga[2] * (1 - f) + gb[2] * f;
+        root.setProperty('--glow-' + p + '-x', (ga[0] * (1 - f) + gb[0] * f).toFixed(1) + '%');
+        root.setProperty('--glow-' + p, rgb(mix(ga[1], gb[1], f)).replace(')', ' / ' + alpha.toFixed(3) + ')'));
+      }
+    };
+    const q = new URLSearchParams(location.search).get('sky');
+    const now = () => { const d = new Date(); return d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600; };
+    if (q === 'cycle') {
+      const clock = document.createElement('div');
+      clock.className = 'sky-clock';
+      document.body.append(clock);
+      const t0 = performance.now(), h0 = now();
+      const tick = t => {
+        const h = (h0 + (t - t0) / 2000) % 24;          // one hour every 2 s
+        paint(h);
+        clock.textContent = String(Math.floor(h)).padStart(2, '0') + ':' + String(Math.floor(h % 1 * 60)).padStart(2, '0');
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    } else if (q && /^\d{1,2}(:\d{2})?$/.test(q)) {
+      const [h, m = 0] = q.split(':').map(Number);
+      paint((h + m / 60) % 24);
+    } else {
+      paint(now());
+      setInterval(() => paint(now()), 60000);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) paint(now()); });
+    }
+  })();
 </script>
 </body>
 </html>

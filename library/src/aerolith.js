@@ -4,6 +4,8 @@
 //   - drop zone: [data-aer-over] while files are dragged over an .aer-drop
 //   - theme switch: input[data-aer-theme] toggles <html data-theme> and remembers the choice
 //   - lens: the rim refraction of .aer-lens (Chromium only: backdrop-filter with an SVG filter)
+//   - menus: popovers drop down from their button; [data-aer-menu] opens one at the pointer
+//   - preload: sprites of closed dialogs and popovers load with the page
 (function () {
   "use strict";
   var KEY = "aerolith-theme";
@@ -98,9 +100,110 @@
     }
   }
 
+  // ---------------------------------------------------------------- menus: placed like a context menu
+  // A [popover].aer-popover opened by a popovertarget button drops down from that button (or opens
+  // above it when there is no room); [data-aer-menu="id"] on any element opens that popover at the
+  // pointer on right-click or long-press. Either way it stays 8 px inside the window.
+  var invoker = null;
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(v, hi)); }
+  function place(pop, at) {
+    var M = 8, vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    var w = pop.offsetWidth, h = pop.offsetHeight, left, top;
+    if (at.nodeType) {
+      var r = at.getBoundingClientRect();
+      left = r.left; top = r.bottom + 6;
+      if (top + h > vh - M && r.top - 6 - h >= M) top = r.top - 6 - h;
+      if (left + w > vw - M) left = r.right - w;
+    } else {
+      left = at.x; top = at.y;
+      if (left + w > vw - M) left = at.x - w;
+      if (top + h > vh - M) top = at.y - h;
+    }
+    pop.style.left = clamp(left, M, vw - M - w) + "px";
+    pop.style.top = clamp(top, M, vh - M - h) + "px";
+  }
+  function openAt(pop, at) {
+    pop.style.position = "fixed"; pop.style.inset = "auto"; pop.style.margin = "0";
+    pop._aerAt = at;
+    if (!pop.matches(":popover-open")) pop.showPopover(); else place(pop, at);
+  }
+  function bindPopover(pop) {
+    function close() { if (pop.matches(":popover-open")) pop.hidePopover(); }
+    // before it shows: anchor it, so it never flashes at the window's corner
+    pop.addEventListener("beforetoggle", function (e) {
+      if (e.newState !== "open") return;
+      if (!pop._aerAt && invoker && invoker.getAttribute("popovertarget") === pop.id) pop._aerAt = invoker;
+      if (!pop._aerAt) return;
+      pop.style.position = "fixed"; pop.style.inset = "auto"; pop.style.margin = "0";
+      place(pop, pop._aerAt);                  // size unknown yet: a first guess
+    });
+    pop.addEventListener("toggle", function (e) {
+      if (e.newState === "open") {
+        if (pop._aerAt) place(pop, pop._aerAt);   // measured: flip or clamp if needed
+        addEventListener("resize", close);
+        addEventListener("scroll", close, { capture: true, passive: true });
+      } else {
+        pop._aerAt = null;
+        removeEventListener("resize", close);
+        removeEventListener("scroll", close, { capture: true });
+      }
+    });
+    // picking an item closes the menu
+    pop.addEventListener("click", function (e) {
+      if (e.target.closest(".aer-menu > a, .aer-menu > button") && pop.matches(":popover-open")) pop.hidePopover();
+    });
+  }
+  function bindContext(el) {
+    var pop = document.getElementById(el.getAttribute("data-aer-menu"));
+    if (!pop || !pop.showPopover) return;
+    var timer = 0, start = null, pending = null, down = false;
+    el.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+      var at = { x: e.clientX, y: e.clientY };
+      // Linux and macOS fire contextmenu on mouse-down, phones while the finger is down. Opened
+      // then, the release would light-dismiss the menu, so it opens when the button or finger lifts.
+      if (down) pending = at; else openAt(pop, at);
+    });
+    el.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse" && e.button !== 2) return;
+      down = true;
+      if (e.pointerType !== "touch") return;
+      start = { x: e.clientX, y: e.clientY };
+      clearTimeout(timer);
+      timer = setTimeout(function () { pending = start; }, 500);    // iOS sends no contextmenu
+    });
+    el.addEventListener("pointermove", function (e) {
+      if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 10) { clearTimeout(timer); start = null; }
+    });
+    function release() {
+      if (!down) return;
+      down = false; clearTimeout(timer); start = null;
+      if (pending) { var at = pending; pending = null; setTimeout(function () { openAt(pop, at); }, 0); }
+    }
+    addEventListener("pointerup", release, true);         // on the window: the pointer may have left el
+    addEventListener("pointercancel", release, true);
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[popovertarget]");
+    if (b) invoker = b;
+  }, true);
+
+  // ---------------------------------------------------------------- sprites of things that start hidden
+  // A closed dialog or popover is not rendered, so its sprites would load only when it first opens
+  // (one empty frame). One off-screen probe fetches them with the page (.aer-preload in the CSS).
+  function preload(root) {
+    if (document.querySelector(".aer-preload") || !root.querySelector(".aer-dialog, .aer-popover, .aer-toaster")) return;
+    var i = document.createElement("i");
+    i.className = "aer-preload"; i.setAttribute("aria-hidden", "true");
+    document.body.appendChild(i);
+  }
+
   // ---------------------------------------------------------------- init
   function init(root) {
     root = root || document;
+    preload(root);
+    root.querySelectorAll(".aer-popover[popover]").forEach(function (p) { if (once(p, "aerBound")) bindPopover(p); });
+    root.querySelectorAll("[data-aer-menu]").forEach(function (el) { if (once(el, "aerCtxBound")) bindContext(el); });
     root.querySelectorAll(".aer-slider > input[type=range], .aer-compare > input[type=range]").forEach(function (input) {
       if (!once(input, "aerBound")) return;
       input.parentElement.setAttribute("data-aer-ready", "");
