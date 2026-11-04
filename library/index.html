@@ -23,10 +23,17 @@
   .brand { display: flex; align-items: center; gap: 10px; font-size: var(--aer-text-l); }
   main { max-width: 1040px; margin: 0 auto; padding: var(--aer-space-6) 16px var(--aer-space-9); }
   .hero { display: grid; gap: var(--aer-space-4); padding: var(--aer-space-7) 0 var(--aer-space-6); }
-  .hero h1 { font: 600 clamp(2rem, 5vw, 3.2rem)/1.1 var(--aer-font-ui); margin: 0; letter-spacing: -0.01em; }
+  .hero h1 { font-size: clamp(2.4rem, 6.4vw, 4.6rem); margin: 0 0 -0.1em; max-width: 19ch; }
   .hero p { margin: 0; max-width: 60ch; font-size: var(--aer-text-l); color: var(--aer-ink-muted); }
   section { margin-block-start: var(--aer-space-8); }
-  h2 { font: 600 var(--aer-text-xl)/1.2 var(--aer-font-ui); margin: 0 0 var(--aer-space-2); }
+  h2 { font: 700 var(--aer-text-xl)/1.2 var(--aer-font-ui); margin: 0 0 var(--aer-space-2); }
+  h2.aer-display { font-size: 2.6rem; line-height: 1.1; margin-block-end: var(--aer-space-3); }
+  .type-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--aer-space-4) var(--aer-space-6); }
+  .type-row .aer-display { font-size: 4rem; margin: 0; }
+  .on-aqua.big, .on-sky { padding: 4px 28px 10px; border-radius: 22px; }
+  .on-sky { display: inline-flex; background: linear-gradient(#1f6fc8, #5aa8ea 70%, #8fd0f6); }
+  .specimen p { max-width: 62ch; margin: 0 0 var(--aer-space-3); }
+  .specimen .sizes { display: grid; gap: 4px; }
   h2 + p { margin: 0 0 var(--aer-space-4); color: var(--aer-ink-muted); max-width: 70ch; }
   h3 { font: 600 var(--aer-text-m)/1.3 var(--aer-font-ui); margin: var(--aer-space-5) 0 var(--aer-space-3); }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--aer-space-3); }
@@ -64,6 +71,7 @@
       <a href="#feedback">Feedback</a>
       <a href="#surfaces">Surfaces</a>
       <a href="#icons">Icons</a>
+      <a href="#type">Type</a>
     </nav>
     <span class="aer-spacer"></span>
     <label class="aer-option"><input type="checkbox" role="switch" class="aer-toggle aer-theme" data-aer-theme aria-label="Dark mode"></label>
@@ -73,7 +81,7 @@
 
 <main>
   <div class="hero">
-    <h1>Every button here was rendered in Bryce&nbsp;2</h1>
+    <h1 class="aer-display">Every button here was rendered in Bryce&nbsp;2</h1>
     <p>Software used to look like glass and water. Aerolith brings that look to the web. I built each button, field and pane as a small 3D scene in Bryce, the landscape renderer from 1996, with a sunny meadow behind the camera. Look closely and you'll find sky in the top half of every button and grass along its lower edge. Underneath it's plain HTML, so forms, keyboards and screen readers work like they always did.</p>
     <div class="row">
       <a class="aer-button aer-l" href="https://github.com/immineal/aerolith#use-it">Get started</a>
@@ -82,7 +90,7 @@
   </div>
 
   <section id="buttons" aria-labelledby="h-buttons">
-    <h2 id="h-buttons">Buttons</h2>
+    <h2 class="aer-display" id="h-buttons">Buttons</h2>
     <p>Aqua for the main action, green for the second one, clear glass for the rest. Buttons come in 32, 44 and 56 px, and 44 is the default because it fits a thumb. Press one and its face sinks into a bowl, so the shine slides down to the bottom edge.</p>
     <div class="stack">
       <div class="row">
@@ -115,7 +123,7 @@
   </section>
 
   <section id="inputs" aria-labelledby="h-inputs">
-    <h2 id="h-inputs">Inputs</h2>
+    <h2 class="aer-display" id="h-inputs">Inputs</h2>
     <p>Under each skin is the browser's own control, so typing, autofill and keyboard focus behave as usual. Fields are pressed into the surface like a shallow well. Whatever you select lights up in aqua.</p>
     <div class="grid">
       <div class="aer-panel stack">
@@ -165,7 +173,7 @@
   </section>
 
   <section id="feedback" aria-labelledby="h-feedback">
-    <h2 id="h-feedback">Feedback</h2>
+    <h2 class="aer-display" id="h-feedback">Feedback</h2>
     <p>Progress is liquid filling a glass tube. Badges are small gems. The spinner is eight separate renders, one per frame, so the sun stays where it is while the orbs go round.</p>
     <div class="grid">
       <div class="aer-card stack">
@@ -191,7 +199,7 @@
   </section>
 
   <section id="surfaces" aria-labelledby="h-surfaces">
-    <h2 id="h-surfaces">Surfaces</h2>
+    <h2 class="aer-display" id="h-surfaces">Surfaces</h2>
     <p>Glass is frosted on a light page and smoked on a dark one, so Bryce rendered every pane for both. In Chrome and Edge the clear lens also bends whatever is behind its rim. Follow a stripe as it crosses the rim and you'll see it kink.</p>
     <div class="grid">
       <div class="stack">
@@ -222,7 +230,7 @@
   </section>
 
   <section id="icons" aria-labelledby="h-icons">
-    <h2 id="h-icons">Icons</h2>
+    <h2 class="aer-display" id="h-icons">Icons</h2>
     <p>35 icons, each drawn as a height map and pressed into a Bryce lattice like a stamp into wax. Aqua icons stand on their own, pearl ones sit on coloured buttons. The 16 px set is its own render, not the 24 px set scaled down.</p>
     <span class="on-aqua" aria-hidden="true"><span class="aer-icon aer-pearl aer-icon-heart"></span><span class="aer-icon aer-pearl aer-icon-play"></span><span class="aer-icon aer-pearl aer-icon-gear"></span></span>
     <ul class="icons" style="margin-top: var(--aer-space-4)">
@@ -264,6 +272,30 @@
     </ul>
   </section>
 
+
+  <section id="type" aria-labelledby="h-type">
+    <h2 class="aer-display" id="h-type">Type</h2>
+    <p>Titles are set in Aerolith Display. Each letter is a little gel tube rendered in Bryce, packed into a colour font, so it's still real text you can select and search. It needs room to shine, so keep it to 32&nbsp;px and up. Glass is clear, so give it colour or a picture to sit on. Everything else is set in Istok Web or Selawik, an open stand-in for Segoe UI.</p>
+    <div class="type-row">
+      <p class="aer-display aer-aqua">Aqua</p>
+      <span class="on-sky"><span class="aer-display aer-glass" style="font-size: 4rem">Glass</span></span>
+      <span class="on-aqua big"><span class="aer-display aer-pearl" style="font-size: 4rem">Pearl</span></span>
+    </div>
+    <h3>Text face</h3>
+    <fieldset class="aer-segmented" aria-label="Text face" id="type-switch">
+      <label><input type="radio" name="face" value="istok" checked> Istok Web</label>
+      <label><input type="radio" name="face" value="selawik"> Selawik</label>
+    </fieldset>
+    <div class="specimen" style="margin-top: var(--aer-space-4)">
+      <p>Drag your photos here and they'll be ready in a moment. Nothing leaves your computer: the conversion runs right here in the browser, even when you're offline.</p>
+      <div class="sizes">
+        <span style="font-size: var(--aer-text-s)">Small print, 14&nbsp;px: Seite 3 von 12 · Größe 2,4&nbsp;MB</span>
+        <span style="font-size: var(--aer-text-l); font-weight: 700">Bold, 19&nbsp;px: Quarterly report 2007</span>
+        <span style="font-size: var(--aer-text-2xl)"><em>Italic, 28&nbsp;px: the sky in every button</em></span>
+      </div>
+    </div>
+  </section>
+
   <footer>
     Aerolith, MIT licensed. Sprites rendered with Bryce 2 under Wine. Bryce is a trademark of its owner; this project is not affiliated.
     <a href="https://github.com/immineal/aerolith">Source and docs on GitHub</a>.
@@ -301,6 +333,15 @@
     links.forEach(a => a.setAttribute('aria-current', a.hash === '#' + e.target.id ? 'true' : 'false'));
   }), { rootMargin: '-40% 0px -55% 0px' });
   document.querySelectorAll('main section').forEach(s => io.observe(s));
+  // text face switch: Istok Web (default) or Selawik, remembered
+  const face = (v) => { if (v === 'selawik') document.documentElement.dataset.aerType = v; else delete document.documentElement.dataset.aerType; };
+  let saved = null;
+  try { saved = localStorage.getItem('aerolith-type'); } catch (e) {}
+  if (saved) { face(saved); const r = document.querySelector(`#type-switch input[value="${saved}"]`); if (r) r.checked = true; }
+  document.getElementById('type-switch').addEventListener('change', (e) => {
+    face(e.target.value);
+    try { localStorage.setItem('aerolith-type', e.target.value); } catch (err) {}
+  });
 </script>
 </body>
 </html>

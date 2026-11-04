@@ -79,3 +79,8 @@ CHOICE_DARK = glass("#1a4a7a", "#0f3a6a", "#4a8ac8", transparency=0.5, diffusion
                     reflection=0.22, refraction=1.05, specularity=0.85)
 DROP_DARK = glass("#2f7a46", "#1c5a30", "#5aa86a", transparency=0.55, diffusion=0.28, ambience=0.26,
                   reflection=0.22, refraction=1.05, specularity=0.85)          # drop zone, drag-over, dark page
+
+# --- display type (Bryce-rendered titles): aqua gel for light pages, tinted glass (smoked on dark
+# pages via the automatic dark matte), pearl for titles on coloured or photo backgrounds.
+# Less reflection than a button: round tubes mirror the meadow all over their lower half
+TYPE = {"aqua": gloss("#1466c8", "#0a3a80", reflection=0.25), "glass": TINT, "pearl": PEARL}

@@ -85,15 +85,31 @@ def exact(rgba, w, h):
     return np.dstack([np.clip(rgb, 0, 1), a[..., 0]])
 
 
+def type_outline(sh: catalog.Sheet, bmps: dict):
+    """Display-face glyphs (one per sheet, "type<tag>-<material>-<codepoint>"): the exact outline
+    coverage for the matte, or None (other sheets, or a fit that does not match the render)."""
+    if not sh.name.startswith("type") or len(sh.items) != 1:
+        return None
+    import typeface as T
+    m = SH.sprites.load(bmps["m"])
+    ch = chr(int(sh.name.rsplit("-", 1)[1], 16))
+    cov, rms = T.outline(ch, np.clip(m[..., 0] + m[..., 1], 0, 1), EX.RENDER_SCALE)
+    if cov is None or rms > 1.2:                    # 512 lattice fits to ~0.4-0.5 px
+        print(f"  {sh.name}: outline fit off (rms {rms:.2f} px), keeping the rendered edge", flush=True)
+        return None
+    return cov
+
+
 def export_sheet(sh: catalog.Sheet, out_dir: Path, names: set = frozenset()) -> list[dict]:
     """names: every item name in the catalog. An item called "<x>.dark" is an explicit dark-theme
     sprite (matted for dark pages); a glass item without one gets an automatic dark matte."""
     bmps = {m: WORK / f"{sh.name}_{m}.bmp" for m in "kwm"}
     explicit_dark = all(it.name.endswith(".dark") for it in sh.items)
-    themes = {"light": SH.matte(bmps, over="dark" if explicit_dark else "light")}
+    edge = type_outline(sh, bmps)
+    themes = {"light": SH.matte(bmps, over="dark" if explicit_dark else "light", outline=edge)}
     if sh.has_glass and not explicit_dark and any(it.glass and it.name + ".dark" not in names
                                                   for it in sh.items):
-        themes["dark"] = SH.matte(bmps, over="dark")
+        themes["dark"] = SH.matte(bmps, over="dark", outline=edge)
     # Bryce renders 1-3 px short of the requested size: resample to exactly RENDER_SCALE x the
     # sheet so sprite boxes land on the 6-px grid (<= 0.15 % scale, no visible softening)
     k = EX.RENDER_SCALE
@@ -199,6 +215,7 @@ def main(argv):
     (EX.DIST / "sprites.css").write_text(EX.css_vars(pub))
     (EX.DIST / "icons.css").write_text(icon_atlas(entries))
     (EX.DIST / "skins.css").write_text(skins_css())
+    fonts(entries)
     bundle()
     print(f"{len(lst)} sprites -> {EX.DIST}")
 
@@ -209,7 +226,7 @@ PARTS = EX.LIB / "work" / "parts"
 
 
 def is_part(name: str) -> bool:
-    return name.startswith(("icon-", "spin-"))
+    return name.startswith(("icon-", "spin-", "type"))
 
 
 def part_file(e: dict, dpr: int) -> Path:
@@ -300,11 +317,68 @@ def strip(entries: dict, name: str, frames: int, margin: int = 3) -> list[str]:
     return out
 
 
+FONTS = Path(__file__).resolve().parent / "fonts"
+TEXT_FONTS = {   # dist name -> source (unmodified; Istok converted TTF -> WOFF2, Selawik as released)
+    "istok-web-regular.woff2": "IstokWeb-Regular.ttf", "istok-web-italic.woff2": "IstokWeb-Italic.ttf",
+    "istok-web-bold.woff2": "IstokWeb-Bold.ttf", "istok-web-bold-italic.woff2": "IstokWeb-BoldItalic.ttf",
+    "selawik-light.woff2": "selawkl.woff2", "selawik-regular.woff2": "selawk.woff2",
+    "selawik-semibold.woff2": "selawksb.woff2", "selawik-bold.woff2": "selawkb.woff2",
+}
+
+
+def fonts(entries: dict):
+    """dist/fonts: the bundled text faces and the Aerolith Display colour fonts (built from the
+    type-* parts when all of them have been rendered)."""
+    import shutil
+    from fontTools.ttLib import TTFont
+    import fontbuild
+    import typeface
+    out = EX.DIST / "fonts"
+    out.mkdir(parents=True, exist_ok=True)
+    for dst, src in TEXT_FONTS.items():
+        d = out / dst
+        if d.exists() and d.stat().st_mtime >= (FONTS / src).stat().st_mtime:
+            continue
+        if src.endswith(".ttf"):
+            f = TTFont(str(FONTS / src))
+            f.flavor = "woff2"
+            f.save(str(d))
+        else:
+            shutil.copyfile(FONTS / src, d)
+    shutil.copyfile(FONTS / "OFL-Istok.txt", out / "OFL-Istok-Web.txt")
+    shutil.copyfile(FONTS / "OFL-Selawik.txt", out / "OFL-Selawik.txt")
+    (out / "OFL-Aerolith-Display.txt").write_text(
+        "Aerolith Display is derived from Istok Web Bold by Andrey V. Panov. The outlines were made\n"
+        "heavier and each glyph was rendered in Bryce; it is a Modified Version under the SIL Open\n"
+        "Font License 1.1 below and does not use the Reserved Font Name \"Istok\".\n\n"
+        "Copyright (c) 2026, Immineal (colour glyphs).\n\n" + (FONTS / "OFL-Istok.txt").read_text())
+    for style in fontbuild_styles():
+        mat, dark = style
+        def sprite(ch, dpr, mat=mat, dark=dark):
+            e = entries.get(f"type-{mat}-{ord(ch):04x}{dark}") or entries.get(f"type-{mat}-{ord(ch):04x}")
+            if e is None:
+                raise KeyError(ch)
+            return part_file(e, dpr), tuple(e.get("outset") or (0, 0, 0, 0))
+        try:
+            sizes = fontbuild.build(mat + dark.replace(".", "-"), sprite, out)
+            print(f"Aerolith Display {mat}{dark}: {sizes}", flush=True)
+        except KeyError as k:
+            print(f"Aerolith Display {mat}{dark}: glyph {k} not rendered yet, font skipped", flush=True)
+
+
+def fontbuild_styles():
+    import materials
+    for mat in materials.TYPE:
+        yield mat, ""
+        if mat == "glass":
+            yield mat, ".dark"
+
+
 def bundle():
     """dist/aerolith.css = base + sprites + skins + components, next to dist/sprites/ (one file, so
     relative url()s in the sprite variables resolve the same way in every browser)."""
     src = EX.LIB / "src"
-    parts = [src / "base.css", EX.DIST / "sprites.css", EX.DIST / "skins.css", EX.DIST / "icons.css",
+    parts = [src / "base.css", src / "type.css", EX.DIST / "sprites.css", EX.DIST / "skins.css", EX.DIST / "icons.css",
              src / "components.css"]
     (EX.DIST / "aerolith.css").write_text("\n".join(f"/* ---- {p.name} ---- */\n" + p.read_text() for p in parts))
     (EX.DIST / "aerolith.js").write_text((src / "aerolith.js").read_text())

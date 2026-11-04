@@ -301,8 +301,27 @@ def spinner():
     return Sheet("spin", items)
 
 
+def display(chars=None, thick=None, tag="", n=None):
+    """Aerolith Display: one isolated gel letter per sprite, per material (typeface.py).
+    Named type-<material>-<codepoint hex>; fontbuild.py packs them into colour fonts."""
+    import typeface as T
+    import concurrent.futures as cf
+    chars = chars or T.CHARSET
+    with cf.ProcessPoolExecutor(6) as ex:           # ~11 s per glyph at N=512
+        hms = dict(zip(chars, ex.map(T.heights, chars, [n or T.N] * len(chars))))
+    items = []
+    for ch in chars:
+        hm = hms[ch]
+        for mat_name, mat in M.TYPE.items():
+            def draw(st, x, y, hm=hm, mat=mat, t=thick or T.THICK):
+                st.slab(x, y, T.CELL, T.CELL, 0, 0, t, mat, heights=hm)
+            items.append(Item(f"type{tag}-{mat_name}-{ord(ch):04x}", T.CELL, T.CELL, draw,
+                              margin=T.MARGIN, glass=mat_name == "glass"))
+    return Sheet("type" + tag, items)
+
+
 def sheets():
     return [s.layout() for s in (buttons("s"), buttons("m"), buttons("l"), glass_buttons("s"), glass_buttons("m"),
                                        glass_buttons("l"), toggles(), checks(),
                                        fields(), panels(), tubes(), gems(), icons(),
-                                       icon_buttons(), segmented(), tiles(), rails(), *windows(), spinner())]
+                                       icon_buttons(), segmented(), tiles(), rails(), *windows(), spinner(), display())]

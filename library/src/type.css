@@ -1,0 +1,71 @@
+/* Aerolith type.
+   Text: Istok Web (default) or Selawik (data-aer-type="selawik"), both bundled, both SIL OFL 1.1.
+   Titles: Aerolith Display, gel letters rendered in Bryce and packed into colour fonts. Each
+   material comes as OpenType-SVG (Firefox, Safari) and sbix (Chromium); tech() makes a browser
+   download only the file it can draw. The fonts keep outlines, so a browser without colour-font
+   support still shows the title, in plain heavy Istok. */
+
+@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-regular.woff2) format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-italic.woff2) format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-bold.woff2) format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Istok Web"; src: url(fonts/istok-web-bold-italic.woff2) format("woff2");
+  font-weight: 700; font-style: italic; font-display: swap; }
+
+@font-face { font-family: "Selawik"; src: url(fonts/selawik-light.woff2) format("woff2");
+  font-weight: 300; font-display: swap; }
+@font-face { font-family: "Selawik"; src: url(fonts/selawik-regular.woff2) format("woff2");
+  font-weight: 400; font-display: swap; }
+@font-face { font-family: "Selawik"; src: url(fonts/selawik-semibold.woff2) format("woff2");
+  font-weight: 600; font-display: swap; }
+@font-face { font-family: "Selawik"; src: url(fonts/selawik-bold.woff2) format("woff2");
+  font-weight: 700; font-display: swap; }
+
+@font-face { font-family: "Aerolith Display Aqua"; font-display: swap;
+  src: url(fonts/aerolith-display-aqua.svg.woff2) format("woff2") tech(color-SVG),
+       url(fonts/aerolith-display-aqua.bmp.woff2) format("woff2") tech(color-sbix); }
+@font-face { font-family: "Aerolith Display Glass"; font-display: swap;
+  src: url(fonts/aerolith-display-glass.svg.woff2) format("woff2") tech(color-SVG),
+       url(fonts/aerolith-display-glass.bmp.woff2) format("woff2") tech(color-sbix); }
+@font-face { font-family: "Aerolith Display Glass Dark"; font-display: swap;
+  src: url(fonts/aerolith-display-glass-dark.svg.woff2) format("woff2") tech(color-SVG),
+       url(fonts/aerolith-display-glass-dark.bmp.woff2) format("woff2") tech(color-sbix); }
+@font-face { font-family: "Aerolith Display Pearl"; font-display: swap;
+  src: url(fonts/aerolith-display-pearl.svg.woff2) format("woff2") tech(color-SVG),
+       url(fonts/aerolith-display-pearl.bmp.woff2) format("woff2") tech(color-sbix); }
+
+[data-aer-type="selawik"], .aer-type-selawik {
+  --aer-font-ui: "Selawik", "Segoe UI", "Istok Web", Tahoma, system-ui, sans-serif;
+}
+
+/* Big titles only: the letters are rendered at about 80 px per em and read best from 32 px up.
+   Weight 700 picks heavy Istok while the font loads; the colour face itself has one weight and is
+   never synthesised. */
+.aer-display {
+  --_face: "Aerolith Display Aqua";
+  font-family: var(--_face), var(--aer-font-ui);
+  font-weight: 700; font-style: normal; font-synthesis: none;
+  line-height: 1.12; letter-spacing: 0; text-shadow: none;
+  color: var(--aer-ink);
+}
+/* Glass is clear: it needs colour or a picture behind it and all but vanishes on a pale page.
+   On dark pages the default face is Glass Dark, because Aqua's deep blue sinks into them
+   (APCA Lc about -22 against Glass Dark's -54). .aer-aqua keeps Aqua anyway, e.g. on a light
+   panel inside a dark page. */
+.aer-display.aer-aqua { --_face: "Aerolith Display Aqua"; }
+.aer-display.aer-glass { --_face: "Aerolith Display Glass"; }
+.aer-display.aer-pearl { --_face: "Aerolith Display Pearl"; }
+:root[data-theme="dark"] .aer-display:not(.aer-aqua, .aer-pearl),
+.aer-dark .aer-display:not(.aer-aqua, .aer-pearl),
+.aer-display.aer-dark:not(.aer-aqua, .aer-pearl) { --_face: "Aerolith Display Glass Dark"; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .aer-display:not(.aer-aqua, .aer-pearl) { --_face: "Aerolith Display Glass Dark"; }
+}
+@media (forced-colors: active) {
+  .aer-display { font-family: var(--aer-font-ui); }
+}
+
+/* Vista-style glow: a soft halo of page colour behind dark text on glass or busy backgrounds */
+.aer-glow { text-shadow: 0 0 1px var(--aer-page), 0 0 6px var(--aer-page), 0 0 12px var(--aer-page); }
